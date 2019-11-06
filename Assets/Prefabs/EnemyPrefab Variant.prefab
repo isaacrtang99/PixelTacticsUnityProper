@@ -1,5 +1,34 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &2142378648018381561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8047813486896447136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 144f6508d6972fa468309931b20033ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-2114205641836193420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8047813486896447136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cf607b60806f614b9be749c49ce647a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mPrevNode: {fileID: 0}
+  mNextNode: {fileID: 0}
+  mTargetNode: {fileID: 0}
+  mPath: []
+  mState: 0
 --- !u!1001 &1151246059577364911
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10,7 +39,7 @@ PrefabInstance:
     - target: {fileID: 6941629820667309839, guid: a7e8fb61472aa624a8be68b0c2c17ceb,
         type: 3}
       propertyPath: m_Name
-      value: EnemyPrefab
+      value: EnemyPrefab Variant
       objectReference: {fileID: 0}
     - target: {fileID: 6941629820667309836, guid: a7e8fb61472aa624a8be68b0c2c17ceb,
         type: 3}
@@ -120,3 +149,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a7e8fb61472aa624a8be68b0c2c17ceb, type: 3}
+--- !u!1 &8047813486896447136 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6941629820667309839, guid: a7e8fb61472aa624a8be68b0c2c17ceb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1151246059577364911}
+  m_PrefabAsset: {fileID: 0}

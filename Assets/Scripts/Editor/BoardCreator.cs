@@ -54,6 +54,7 @@ public class BoardCreator : Editor
         
         foreach(Transform t in toDelete)
         {
+            Debug.Log("destroy immediate in board creator");
             DestroyImmediate(t.gameObject);
         }
         toDelete.Clear();
@@ -64,6 +65,7 @@ public class BoardCreator : Editor
         }
         foreach(Transform t in toDelete)
         {
+            Debug.Log("destroy immediate in board creator");
             DestroyImmediate(t.gameObject);
         }
 

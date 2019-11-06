@@ -13,13 +13,23 @@ public class Node : MonoBehaviour
     public List<GameObject> mAdjacent;
     public NodeType nType;
     public Vector2Int indices;
-    public Character currObject;
+    public Character currChar = null;
     void Start()
     {
+        currChar = null;
     }
     // Update is called once per frame
     void Update()
     {
         
     }
+    public void SetUnit(Character c)
+    {
+        currChar = c;
+    }
+    public Character GetUnit()
+    {
+        return currChar;
+    }
+
 }
