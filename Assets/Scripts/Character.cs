@@ -14,9 +14,17 @@ public class Character : MonoBehaviour
     public Node currNode;
     public string type;
     public CharacterState cState;
-    public int health;
+    public float health;
+    public float max_health = 10;
+    SpriteRenderer sR;
+    Color c_start = Color.white;
+    Color c;
+    Color c_end = Color.red;
+
     void Start()
     {
+        sR = gameObject.GetComponent<SpriteRenderer>();
+        c_start = sR.color;
         this.prevPosition = this.transform.position;
         this.prevNode = null;
         this.cState = CharacterState.Paused;
@@ -26,9 +34,10 @@ public class Character : MonoBehaviour
         health -= i;
         if(health <= 0)
         {
-            Debug.Log("Took Damage");
             Destroy(this.gameObject);
         }
+        c = Color.Lerp(c_start, c_end, (max_health - health) / max_health);
+        sR.color = c;
     }
     public void SetNode(Node n)
     {

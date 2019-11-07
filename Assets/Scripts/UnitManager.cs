@@ -105,7 +105,7 @@ public class UnitManager : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < 6; i++)
         {
             int r = Random.Range(0, emptySlots.Count);
             GameObject b = Instantiate(enemySpawnPrefab, emptySlots[r].transform.position, Quaternion.identity) as GameObject;

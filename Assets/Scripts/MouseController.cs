@@ -7,7 +7,7 @@ public class MouseController : MonoBehaviour
     private Character characterUnderMouse = null;
     private Character draggingCharacter = null;
     private Node nodeUnderMouse = null;
-
+    private GameObject um;
     private int NodeLayer;
     private int CharLayer;
 
@@ -16,6 +16,8 @@ public class MouseController : MonoBehaviour
     {
         NodeLayer = LayerMask.NameToLayer("Node");
         CharLayer = LayerMask.NameToLayer("Character");
+        um = GameObject.Find("UnitManager");
+
     }
 
     // Update is called once per frame
@@ -32,7 +34,7 @@ public class MouseController : MonoBehaviour
         {
             this.nodeUnderMouse = hit.collider.transform.parent.GetComponent<Node>();
         }
-        if (Input.GetMouseButtonDown(0) && this.draggingCharacter == null && this.characterUnderMouse != null && this.characterUnderMouse.type.Equals("ally"))
+        if (Input.GetMouseButtonDown(0) && this.draggingCharacter == null && this.characterUnderMouse != null && this.characterUnderMouse.type.Equals("ally" )&& !um.GetComponent<UnitManager>().gameStarted)
         {
             this.draggingCharacter = this.characterUnderMouse;
         }

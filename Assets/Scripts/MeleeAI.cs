@@ -6,7 +6,7 @@ public class MeleeAI : MonoBehaviour
 {
     bool isDead = false;
     bool isMoving = false;
-    float moveTimer = 0.0f;
+    public float moveTimer = 0.0f;
     float attackTimer = 0.0f;
     Node oldEndNode = null;
     Pathfind pathfinder;
@@ -21,6 +21,7 @@ public class MeleeAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        string targetType = "";
         moveTimer -= Time.deltaTime;
         attackTimer -= Time.deltaTime;
         GameObject owner = this.gameObject;
@@ -30,10 +31,12 @@ public class MeleeAI : MonoBehaviour
         if (this.gameObject.GetComponent<Character>().type == "ally")
         {
             targets = unitManager.GetComponent<UnitManager>().enemies;
+            targetType = "enemy";
         }
         else if(this.gameObject.GetComponent<Character>().type == "enemy")
         {
             targets = unitManager.GetComponent<UnitManager>().allies;
+            targetType = "ally";
         }
         if (gameObject.GetComponent<Character>().currNode != null && gameObject.GetComponent<Character>().currNode.nType != NodeType.Bench && gameObject.GetComponent<Character>().cState == CharacterState.Active && targets.Count > 0)
         {
@@ -44,7 +47,7 @@ public class MeleeAI : MonoBehaviour
                 Node n = g.GetComponent<Node>();
                 if (n.GetUnit() != null)
                 {
-                    if(n.GetUnit().type == "enemy")
+                    if(n.GetUnit().type == targetType)
                     {
                         Debug.Log("Found enemy to attack");
                         pathfinder.mState = MeleeState.Attack;
@@ -65,24 +68,30 @@ public class MeleeAI : MonoBehaviour
                 Character mC = gameObject.GetComponent<Character>();
                 while (!hasFoundTargetSpace)
                 {
+                    bool available = false;
                     foreach(Character c in targets)
                     {
-                        if(Mathf.Abs(c.currNode.indices.x - mC.currNode.indices.x)
-                            +Mathf.Abs(c.currNode.indices.y - mC.currNode.indices.y)< shortestDist)
+                        if (c != null)
                         {
-                            bool hasAdjacent = false;
-                            foreach(GameObject g in c.currNode.mAdjacent)
+                            available = true;
+                            if (Mathf.Abs(c.currNode.indices.x - mC.currNode.indices.x)
+                                + Mathf.Abs(c.currNode.indices.y - mC.currNode.indices.y) < shortestDist)
                             {
-                                if (g.GetComponent<Node>().currChar == null) hasAdjacent = true;
-                            }
-                            if (hasAdjacent)
-                            {
-                                shortestDist = Mathf.Abs(c.currNode.indices.x - mC.currNode.indices.x)
-                                + Mathf.Abs(c.currNode.indices.y - mC.currNode.indices.y);
-                                targetCharacter = c;
+                                bool hasAdjacent = false;
+                                foreach (GameObject g in c.currNode.mAdjacent)
+                                {
+                                    if (g.GetComponent<Node>().currChar == null) hasAdjacent = true;
+                                }
+                                if (hasAdjacent)
+                                {
+                                    shortestDist = Mathf.Abs(c.currNode.indices.x - mC.currNode.indices.x)
+                                    + Mathf.Abs(c.currNode.indices.y - mC.currNode.indices.y);
+                                    targetCharacter = c;
+                                }
                             }
                         }
                     }
+                    if (!available) break;
                     foreach(GameObject g in targetCharacter.currNode.mAdjacent)
                     {
                         Node n = g.GetComponent<Node>();
