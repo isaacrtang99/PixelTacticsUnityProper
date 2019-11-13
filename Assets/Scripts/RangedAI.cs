@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeleeAI : MonoBehaviour
+public class RangedAI : MonoBehaviour
 {
     bool isDead = false;
     bool isMoving = false;
     public float moveTimer = 0.0f;
-    float attackTimer = 0.0f;
+    public float attackTimer = 0.0f;
     Node oldEndNode = null;
     Pathfind pathfinder;
     public List<Character> targets;
-    // Start is called before the first frame update
+    public GameObject mProjectile;
+    List<List<GameObject>> board;
+    // Use this for initialization
     void Start()
     {
         pathfinder = this.gameObject.GetComponent<Pathfind>();
@@ -33,13 +35,13 @@ public class MeleeAI : MonoBehaviour
             targets = unitManager.GetComponent<UnitManager>().enemies;
             targetType = "enemy";
         }
-        else if(this.gameObject.GetComponent<Character>().type == "enemy")
+        else if (this.gameObject.GetComponent<Character>().type == "enemy")
         {
             targets = unitManager.GetComponent<UnitManager>().allies;
             targetType = "ally";
         }
         int validTargetCount = 0;
-        foreach (Character c in targets)
+        foreach(Character c in targets)
         {
             if (c.currNode.nType == NodeType.Board) validTargetCount++;
         }
@@ -48,12 +50,14 @@ public class MeleeAI : MonoBehaviour
         {
             Node targetAttackNode = null;
             this.pathfinder.mState = MeleeState.Move;
-            foreach(GameObject g in this.gameObject.GetComponent<Character>().currNode.mAdjacent)
+            foreach (Character c in targets)
             {
-                Node n = g.GetComponent<Node>();
+                Node n = c.currNode;
                 if (n.GetUnit() != null)
                 {
-                    if(n.GetUnit().type == targetType)
+                    Node myNode = this.gameObject.GetComponent<Character>().currNode;
+                    int dist = Mathf.Abs(n.indices.x - myNode.indices.x) + Mathf.Abs(n.indices.y - myNode.indices.y);
+                    if (n.GetUnit().type == targetType && dist <= 4)
                     {
                         Debug.Log("Found enemy to attack");
                         pathfinder.mState = MeleeState.Attack;
@@ -63,8 +67,9 @@ public class MeleeAI : MonoBehaviour
                 }
             }
 
-            if(this.pathfinder.mState == MeleeState.Move)
+            if (this.pathfinder.mState == MeleeState.Move)
             {
+                Debug.Log("Randed moving");
                 isMoving = true;
                 bool hasFoundTargetSpace = false;
                 Character targetCharacter = null;
@@ -75,7 +80,7 @@ public class MeleeAI : MonoBehaviour
                 while (!hasFoundTargetSpace)
                 {
                     bool available = false;
-                    foreach(Character c in targets)
+                    foreach (Character c in targets)
                     {
                         if (c != null)
                         {
@@ -98,29 +103,29 @@ public class MeleeAI : MonoBehaviour
                         }
                     }
                     if (!available) break;
-                    foreach(GameObject g in targetCharacter.currNode.mAdjacent)
+                    foreach (GameObject g in targetCharacter.currNode.mAdjacent)
                     {
                         Node n = g.GetComponent<Node>();
                         if (n.GetUnit() == null)
                         {
-                            if(Mathf.Abs(n.indices.x-mC.currNode.indices.x)+Mathf.Abs(n.indices.y-mC.currNode.indices.y) < shortestSideDist)
+                            if (Mathf.Abs(n.indices.x - mC.currNode.indices.x) + Mathf.Abs(n.indices.y - mC.currNode.indices.y) < shortestSideDist)
                             {
                                 shortestSideDist = Mathf.Abs(n.indices.x - mC.currNode.indices.x) + Mathf.Abs(n.indices.y - mC.currNode.indices.y);
-                                targetNode = n; 
+                                targetNode = n;
                                 hasFoundTargetSpace = true;
                             }
                         }
                     }
                 }
-                if(targetNode != oldEndNode)
+                if (targetNode != oldEndNode)
                 {
                     oldEndNode = targetNode;
                     this.pathfinder.PathFinder(gameObject.GetComponent<Character>().currNode.gameObject, oldEndNode.gameObject);
                 }
-                if(moveTimer <=0.0f && this.pathfinder.mNextNode != null && this.pathfinder.mNextNode.GetComponent<Node>()!=null)
+                if (moveTimer <= 0.0f && this.pathfinder.mNextNode != null && this.pathfinder.mNextNode.GetComponent<Node>() != null)
                 {
                     gameObject.GetComponent<Character>().SetNode(this.pathfinder.mNextNode.GetComponent<Node>());
-                    if(this.pathfinder.mPath.Count > 0)
+                    if (this.pathfinder.mPath.Count > 0)
                     {
                         this.pathfinder.mPrevNode = this.pathfinder.mNextNode;
                         this.pathfinder.mNextNode = this.pathfinder.mPath[pathfinder.mPath.Count - 1];
@@ -134,26 +139,29 @@ public class MeleeAI : MonoBehaviour
                 }
 
             }
-            else if(this.pathfinder.mState == MeleeState.Attack)
+            else if (this.pathfinder.mState == MeleeState.Attack)
             {
-                if(attackTimer <= 0.0f)
+                if (attackTimer <= 0.0f)
                 {
                     attackNode(targetAttackNode);
                     attackTimer = 1.0f;
                 }
             }
-
         }
-
-
     }
-
     public void attackNode(Node n)
     {
         if (n == null) return;
         if (n.currChar != null)
         {
-            n.currChar.TakeDamage(100);
+            GameObject p = Instantiate(mProjectile, this.gameObject.transform.position, Quaternion.identity) as GameObject;
+            p.GetComponent<Projectile>().startPosition = this.gameObject.transform.position;
+            p.GetComponent<Projectile>().targetNode = n;
+            p.GetComponent<Projectile>().targetCharacter = n.currChar;
+            if (this.gameObject.GetComponent<Character>().type == "enemy")
+            {
+                p.GetComponent<Projectile>().color = "green";
+            }
         }
     }
 }

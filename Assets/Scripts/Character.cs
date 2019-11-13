@@ -15,7 +15,7 @@ public class Character : MonoBehaviour
     public string type;
     public CharacterState cState;
     public float health;
-    public float max_health = 10;
+    public float max_health;
     SpriteRenderer sR;
     Color c_start = Color.white;
     Color c;
@@ -34,6 +34,14 @@ public class Character : MonoBehaviour
         health -= i;
         if(health <= 0)
         {
+            GameObject unitManager = GameObject.Find("UnitManager");
+            if (type == "ally") {
+                unitManager.GetComponent<UnitManager>().RemoveAlly(this);
+            }
+            else
+            {
+                unitManager.GetComponent<UnitManager>().RemoveEnemy(this);
+            }
             Destroy(this.gameObject);
         }
         c = Color.Lerp(c_start, c_end, (max_health - health) / max_health);

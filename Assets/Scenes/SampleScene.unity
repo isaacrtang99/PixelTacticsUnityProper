@@ -407,7 +407,11 @@ MonoBehaviour:
   enemies: []
   allySpawnPrefab: {fileID: 2308631066961555477, guid: 2586126f0e7d3354686f2f6e5627e6e7,
     type: 3}
+  allySpawnPrefabRanged: {fileID: 5109617172988472797, guid: d1baf40caa746e74e99f44b6e4aea101,
+    type: 3}
   enemySpawnPrefab: {fileID: 8047813486896447136, guid: 9abac7a3c325331438eea8c011875b17,
+    type: 3}
+  enemySpawnPrefabRanged: {fileID: 7390707537555840511, guid: e47760d8360927940b49405f2d27b1a8,
     type: 3}
   gameStarted: 0
 --- !u!212 &1717649046
