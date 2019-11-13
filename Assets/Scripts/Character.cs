@@ -54,7 +54,7 @@ public class Character : MonoBehaviour
         {
             currNode.currChar = null;
         }
-        if (n.GetUnit() == null || n.GetUnit().Equals(null))
+        if (n.GetUnit() == null)
         {
             n.SetUnit(this);
             if (temp != null)
