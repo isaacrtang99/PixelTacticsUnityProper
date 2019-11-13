@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class MeleeAI : MonoBehaviour
 {
+    [SerializeField]
+    GameObject debugIcon;
+
     bool isDead = false;
     bool isMoving = false;
     public float moveTimer = 0.0f;
     float attackTimer = 0.0f;
     Node oldEndNode = null;
+    Vector3 prevPos;
+    Vector3 currPos;
     Pathfind pathfinder;
     public List<Character> targets;
     // Start is called before the first frame update
@@ -16,6 +21,9 @@ public class MeleeAI : MonoBehaviour
     {
         pathfinder = this.gameObject.GetComponent<Pathfind>();
         targets = null;
+        prevPos = this.transform.position;
+        currPos = this.transform.position;
+        debugIcon.transform.SetParent(null);
     }
 
     // Update is called once per frame
@@ -112,25 +120,35 @@ public class MeleeAI : MonoBehaviour
                         }
                     }
                 }
+                bool lerp = true;
                 if(targetNode != oldEndNode)
                 {
                     oldEndNode = targetNode;
                     this.pathfinder.PathFinder(gameObject.GetComponent<Character>().currNode.gameObject, oldEndNode.gameObject);
+                    lerp = false;
                 }
                 if(moveTimer <=0.0f && this.pathfinder.mNextNode != null && this.pathfinder.mNextNode.GetComponent<Node>()!=null)
                 {
                     gameObject.GetComponent<Character>().SetNode(this.pathfinder.mNextNode.GetComponent<Node>());
+                    debugIcon.transform.position = this.pathfinder.mNextNode.GetComponent<Node>().transform.position;
                     if(this.pathfinder.mPath.Count > 0)
                     {
                         this.pathfinder.mPrevNode = this.pathfinder.mNextNode;
                         this.pathfinder.mNextNode = this.pathfinder.mPath[pathfinder.mPath.Count - 1];
+                        this.prevPos = this.pathfinder.mPrevNode.transform.position;
+                        this.currPos = this.pathfinder.mNextNode.transform.position;
                         this.pathfinder.mPath.RemoveAt(this.pathfinder.mPath.Count - 1);
                         moveTimer = 1.0f;
                     }
                     else
                     {
+                        lerp = false;
                         this.pathfinder.PathFinder(gameObject.GetComponent<Character>().currNode.gameObject, oldEndNode.gameObject);
                     }
+                }
+                else if (moveTimer > 0 && this.pathfinder.mNextNode != null && lerp)
+                {
+                    this.transform.position = Vector3.Lerp(this.prevPos, this.currPos, 1 - moveTimer);
                 }
 
             }

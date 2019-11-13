@@ -37,6 +37,7 @@ public class MouseController : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && this.draggingCharacter == null && this.characterUnderMouse != null && this.characterUnderMouse.type.Equals("ally" )&& !um.GetComponent<UnitManager>().gameStarted)
         {
             this.draggingCharacter = this.characterUnderMouse;
+            this.draggingCharacter.prevNode = this.draggingCharacter.currNode;
         }
 
         if (this.draggingCharacter != null)
