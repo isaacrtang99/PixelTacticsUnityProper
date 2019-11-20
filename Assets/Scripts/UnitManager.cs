@@ -37,29 +37,7 @@ public class UnitManager : MonoBehaviour
 
         addCooldown -= Time.deltaTime;
         resetCooldown -= Time.deltaTime;
-        if (addCooldown < 0.0f && Input.GetKey("a") && money > 0)
-        {
-            addCooldown = 1.0f;
-            AddAlly();
-        }
-        if (addCooldown < 0.0f && Input.GetKey("s") && money > 0)
-        {
-            addCooldown = 1.0f;
-            AddAllyRanged();
-        }
-        if (resetCooldown < 0.0f && Input.GetKey("space") && !gameStarted)
-        {
-            onBoard = 0;
-            foreach (Character c in allies)
-            {
-                if (c.currNode.nType == NodeType.Board) onBoard++;
-            }
-            if (onBoard != 0)
-            {
-                gameStarted = true;
-                startStage();
-            }
-        }
+
         if (gameStarted)
         {
             if (enemies.Count == 0)
@@ -71,6 +49,7 @@ public class UnitManager : MonoBehaviour
                 gameStarted = false;
             }
         }
+
         /*for (int i = 0; i < bench.Count; i++)
         {
             if (bench[i].GetComponent<Node>().GetUnit() != null)
@@ -78,6 +57,37 @@ public class UnitManager : MonoBehaviour
                 //bench[i].GetComponent<Node>().GetUnit().gameObject.SetActive(false);
             }
         }*/
+    }
+
+    public void StartGameButtonClick()
+    {
+        if (gameStarted) return;
+
+        onBoard = 0;
+        foreach (Character c in allies)
+        {
+            if (c.currNode.nType == NodeType.Board) onBoard++;
+        }
+        if (onBoard == 0) return;
+
+        gameStarted = true;
+        startStage();
+    }
+
+    public void AddMeleeButton()
+    {
+        if (money <= 0) return;
+
+        AddAlly();
+
+    }
+
+    public void AddRangedButton()
+    {
+        if (money <= 0) return;
+
+        AddAllyRanged();
+
     }
 
     void AddAlly()
