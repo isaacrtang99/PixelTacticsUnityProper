@@ -37,7 +37,29 @@ public class UnitManager : MonoBehaviour
 
         addCooldown -= Time.deltaTime;
         resetCooldown -= Time.deltaTime;
-        
+        if (addCooldown < 0.0f && Input.GetKey("a") && money > 0)
+        {
+            addCooldown = 1.0f;
+            AddAlly();
+        }
+        if (addCooldown < 0.0f && Input.GetKey("s") && money > 0)
+        {
+            addCooldown = 1.0f;
+            AddAllyRanged();
+        }
+        if (resetCooldown < 0.0f && Input.GetKey("space") && !gameStarted)
+        {
+            onBoard = 0;
+            foreach (Character c in allies)
+            {
+                if (c.currNode.nType == NodeType.Board) onBoard++;
+            }
+            if (onBoard != 0)
+            {
+                gameStarted = true;
+                startStage();
+            }
+        }
         if (gameStarted)
         {
             if (enemies.Count == 0)
@@ -49,7 +71,6 @@ public class UnitManager : MonoBehaviour
                 gameStarted = false;
             }
         }
-
         /*for (int i = 0; i < bench.Count; i++)
         {
             if (bench[i].GetComponent<Node>().GetUnit() != null)
@@ -57,37 +78,6 @@ public class UnitManager : MonoBehaviour
                 //bench[i].GetComponent<Node>().GetUnit().gameObject.SetActive(false);
             }
         }*/
-    }
-
-    public void StartGameButtonClick()
-    {
-        if (gameStarted) return;
-
-        onBoard = 0;
-        foreach (Character c in allies)
-        {
-            if (c.currNode.nType == NodeType.Board) onBoard++;
-        }
-        if (onBoard == 0) return;
-
-        gameStarted = true;
-        startStage();
-    }
-
-    public void AddMeleeButton()
-    {
-        if (money <= 0) return;
-
-        AddAlly();
-
-    }
-
-    public void AddRangedButton()
-    {
-        if (money <= 0) return;
-
-        AddAllyRanged();
-
     }
 
     void AddAlly()
@@ -128,15 +118,15 @@ public class UnitManager : MonoBehaviour
     }
     void CreateNewStage(int level)
     {
-    
+
         //wipe the stage
         for (int i = 0; i < 8; i++)
         {
-            for(int j = 0; j < 8; j++)
+            for (int j = 0; j < 8; j++)
             {
                 if (board[i][j].GetComponent<Node>().GetUnit() != null)
                 {
-                    if(board[i][j].GetComponent<Node>().GetUnit().type == "ally")
+                    if (board[i][j].GetComponent<Node>().GetUnit().type == "ally")
                     {
                         RemoveAlly(board[i][j].GetComponent<Node>().GetUnit());
                     }
@@ -149,23 +139,23 @@ public class UnitManager : MonoBehaviour
                 }
             }
         }
-        if(level == 1)
+        if (level == 1)
         {
             CreateNewStage1();
         }
-        else if(level == 2)
+        else if (level == 2)
         {
             CreateNewStage2();
         }
-        else if(level == 3)
+        else if (level == 3)
         {
             CreateNewStage3();
         }
-        else if(level == 4)
+        else if (level == 4)
         {
             CreateNewStage4();
         }
-        else if(level == 5)
+        else if (level == 5)
         {
             CreateNewStage5();
         }
@@ -339,7 +329,7 @@ public class UnitManager : MonoBehaviour
     }
     public void RemoveAlly(Character a)
     {
-        for(int i = 0; i < allies.Count; i++)
+        for (int i = 0; i < allies.Count; i++)
         {
             if (allies[i].Equals(a))
             {
