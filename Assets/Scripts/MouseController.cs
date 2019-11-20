@@ -46,7 +46,7 @@ public class MouseController : MonoBehaviour
             {
                 if (this.nodeUnderMouse != null && this.nodeUnderMouse.currChar == null && (this.nodeUnderMouse.indices.y < 4||this.nodeUnderMouse.nType == NodeType.Bench))
                 {
-                    this.draggingCharacter.SetNode(this.nodeUnderMouse);
+                    this.draggingCharacter.SetNode(this.nodeUnderMouse, true);
                     this.nodeUnderMouse.SetUnit(this.draggingCharacter);
                     /*this.draggingCharacter.transform.position = this.nodeUnderMouse.transform.position;
                     this.draggingCharacter.prevPosition = this.draggingCharacter.transform.position;*/

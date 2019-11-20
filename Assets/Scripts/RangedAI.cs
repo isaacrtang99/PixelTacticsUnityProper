@@ -9,6 +9,8 @@ public class RangedAI : MonoBehaviour
     public float actionTimer = 0.0f;
     Node oldEndNode = null;
     Pathfind pathfinder;
+    public Vector3 prevPos;
+    public Vector3 currPos;
     public List<Character> targets;
     public GameObject mProjectile;
     List<List<GameObject>> board;
@@ -16,6 +18,8 @@ public class RangedAI : MonoBehaviour
     void Start()
     {
         pathfinder = this.gameObject.GetComponent<Pathfind>();
+        prevPos = this.transform.position;
+        currPos = this.transform.position;
         targets = null;
     }
 
@@ -28,7 +32,11 @@ public class RangedAI : MonoBehaviour
         GameObject nodeManager = GameObject.Find("NodeManager");
         GameObject unitManager = GameObject.Find("UnitManager");
         List<List<GameObject>> board = nodeManager.GetComponent<NodeManager>().board;
-        if (actionTimer > 0.0f) return;
+        if (actionTimer > 0.0f)
+        {
+            this.transform.position = Vector3.Lerp(this.prevPos, this.currPos, 1 - actionTimer);
+            return;
+        }
         if (this.gameObject.GetComponent<Character>().type == "ally")
         {
             targets = unitManager.GetComponent<UnitManager>().enemies;
@@ -115,13 +123,18 @@ public class RangedAI : MonoBehaviour
                         }
                     }
                 }
+
+                bool lerp = false;
                 this.pathfinder.PathFinder(gameObject.GetComponent<Character>().currNode.gameObject, targetNode.gameObject);
                 if (this.pathfinder.mNextNode != null && this.pathfinder.mNextNode.GetComponent<Node>() != null)
                 {
                     if (this.pathfinder.mPath.Count > 0)
                     {
+                        lerp = true;
                         this.pathfinder.mPrevNode = this.pathfinder.mNextNode;
                         this.pathfinder.mNextNode = this.pathfinder.mPath[pathfinder.mPath.Count - 1];
+                        this.prevPos = this.pathfinder.mPrevNode.transform.position;
+                        this.currPos = this.pathfinder.mNextNode.transform.position;
                         this.pathfinder.mPath.RemoveAt(this.pathfinder.mPath.Count - 1);
                         gameObject.GetComponent<Character>().SetNode(this.pathfinder.mNextNode.GetComponent<Node>());
                         actionTimer = 1.0f;
@@ -132,9 +145,14 @@ public class RangedAI : MonoBehaviour
                     }
                 }
 
+                if (!lerp)
+                {
+                    this.prevPos = this.currPos;
+                }
             }
             else if (this.pathfinder.mState == MeleeState.Attack)
             {
+                this.prevPos = this.currPos;
                 attackNode(targetAttackNode);
                 actionTimer = 1.0f;
             }

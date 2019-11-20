@@ -16,8 +16,7 @@ public class UnitManager : MonoBehaviour
     public bool gameStarted;
     float addCooldown = 0.0f;
     float resetCooldown = 0.0f;
-    float wonCooldown = 1.0f;
-    int money = 10;
+    public static int money = 10;
     int level = 0;
     int onBoard;
     // Start is called before the first frame update
@@ -38,7 +37,7 @@ public class UnitManager : MonoBehaviour
 
         addCooldown -= Time.deltaTime;
         resetCooldown -= Time.deltaTime;
-        if (addCooldown < 0.0f && Input.GetKey("a") && money > 0) 
+        if (addCooldown < 0.0f && Input.GetKey("a") && money > 0)
         {
             addCooldown = 1.0f;
             AddAlly();
@@ -50,7 +49,7 @@ public class UnitManager : MonoBehaviour
         }
         if (resetCooldown < 0.0f && Input.GetKey("space") && !gameStarted)
         {
-           onBoard = 0;
+            onBoard = 0;
             foreach (Character c in allies)
             {
                 if (c.currNode.nType == NodeType.Board) onBoard++;
@@ -63,18 +62,13 @@ public class UnitManager : MonoBehaviour
         }
         if (gameStarted)
         {
-            if(enemies.Count == 0)
+            if (enemies.Count == 0)
             {
-                wonCooldown -= Time.deltaTime;
-                if (wonCooldown <= 0.0f)
-                {
-                    money += 3;
-                    money += Mathf.Max(0, 8 - onBoard);
-                    level++;
-                    CreateNewStage(level);
-                    gameStarted = false;
-                    wonCooldown = 1.0f;
-                }
+                money += 3;
+                money += Mathf.Max(0, 8 - onBoard);
+                level++;
+                CreateNewStage(level);
+                gameStarted = false;
             }
         }
         /*for (int i = 0; i < bench.Count; i++)
@@ -124,15 +118,15 @@ public class UnitManager : MonoBehaviour
     }
     void CreateNewStage(int level)
     {
-    
+
         //wipe the stage
         for (int i = 0; i < 8; i++)
         {
-            for(int j = 0; j < 8; j++)
+            for (int j = 0; j < 8; j++)
             {
                 if (board[i][j].GetComponent<Node>().GetUnit() != null)
                 {
-                    if(board[i][j].GetComponent<Node>().GetUnit().type == "ally")
+                    if (board[i][j].GetComponent<Node>().GetUnit().type == "ally")
                     {
                         RemoveAlly(board[i][j].GetComponent<Node>().GetUnit());
                     }
@@ -145,23 +139,23 @@ public class UnitManager : MonoBehaviour
                 }
             }
         }
-        if(level == 1)
+        if (level == 1)
         {
             CreateNewStage1();
         }
-        else if(level == 2)
+        else if (level == 2)
         {
             CreateNewStage2();
         }
-        else if(level == 3)
+        else if (level == 3)
         {
             CreateNewStage3();
         }
-        else if(level == 4)
+        else if (level == 4)
         {
             CreateNewStage4();
         }
-        else if(level == 5)
+        else if (level == 5)
         {
             CreateNewStage5();
         }
@@ -335,7 +329,7 @@ public class UnitManager : MonoBehaviour
     }
     public void RemoveAlly(Character a)
     {
-        for(int i = 0; i < allies.Count; i++)
+        for (int i = 0; i < allies.Count; i++)
         {
             if (allies[i].Equals(a))
             {
@@ -352,6 +346,11 @@ public class UnitManager : MonoBehaviour
                 enemies.RemoveAt(i);
             }
         }
+    }
+
+    public static int GetMoney()
+    {
+        return money;
     }
 
 }

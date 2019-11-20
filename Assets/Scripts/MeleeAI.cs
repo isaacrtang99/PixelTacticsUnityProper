@@ -11,8 +11,8 @@ public class MeleeAI : MonoBehaviour
     bool isMoving = false;
     public float actionTimer = 0.0f;
     public Node oldEndNode = null;
-    Vector3 prevPos;
-    Vector3 currPos;
+    public Vector3 prevPos;
+    public Vector3 currPos;
     Pathfind pathfinder;
     public List<Character> targets;
     // Start is called before the first frame update
@@ -34,7 +34,11 @@ public class MeleeAI : MonoBehaviour
         GameObject nodeManager = GameObject.Find("NodeManager");
         GameObject unitManager = GameObject.Find("UnitManager");
         List<List<GameObject>> board = nodeManager.GetComponent<NodeManager>().board;
-        if (actionTimer > 0.0f) return;
+        if (actionTimer > 0.0f)
+        {
+            this.transform.position = Vector3.Lerp(this.prevPos, this.currPos, 1 - actionTimer);
+            return;
+        }
         if (this.gameObject.GetComponent<Character>().type == "ally")
         {
             targets = unitManager.GetComponent<UnitManager>().enemies;
@@ -128,6 +132,7 @@ public class MeleeAI : MonoBehaviour
                     //if (debugIcon != null)debugIcon.transform.position = this.pathfinder.mNextNode.GetComponent<Node>().transform.position;
                     if(this.pathfinder.mPath.Count > 0)
                     {
+                        lerp = true;
                         this.pathfinder.mPrevNode = this.pathfinder.mNextNode;
                         this.pathfinder.mNextNode = this.pathfinder.mPath[pathfinder.mPath.Count - 1];
                         this.gameObject.GetComponent<Character>().SetNode(pathfinder.mNextNode.GetComponent<Node>());
@@ -147,15 +152,16 @@ public class MeleeAI : MonoBehaviour
                     gameObject.GetComponent<Character>().SetNode(nextNode);
                     actionTimer = 1.0f;
                 }
-                /*else if (moveTimer > 0 && this.pathfinder.mNextNode != null && lerp)
+
+                if (!lerp)
                 {
-                    this.transform.position = Vector3.Lerp(this.prevPos, this.currPos, 1 - moveTimer);
-                }*/
+                    this.prevPos = this.currPos;
+                }
 
             }
             else if(this.pathfinder.mState == MeleeState.Attack)
             {
-
+                this.prevPos = this.currPos;
                 attackNode(targetAttackNode);
                 actionTimer = 1.0f;
               
