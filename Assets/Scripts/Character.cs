@@ -55,7 +55,7 @@ public class Character : MonoBehaviour
 
         sR.color = c;
     }
-    public void SetNode(Node n)
+    public void SetNode(Node n, bool setTransform = false)
     {
         Node temp = currNode;
         if (currNode != null)
@@ -65,18 +65,22 @@ public class Character : MonoBehaviour
         if (n.GetUnit() == null)
         {
             n.SetUnit(this);
+        }
+        if(n.GetUnit()==this)
+        {
             if (temp != null)
             {
                 temp = null;
             }
             currNode = n;
-            this.gameObject.transform.position = n.gameObject.transform.position;
-            n.SetUnit(this);
-        }
-        else if(n.GetUnit()==this)
-        {
-            currNode = n;
-            this.gameObject.transform.position = n.gameObject.transform.position;
+            RangedAI ai = this.GetComponent<RangedAI>();
+            if (ai != null) ai.currPos = n.transform.position;
+            else
+            {
+                MeleeAI mai = this.GetComponent<MeleeAI>();
+                if (mai != null) mai.currPos = n.transform.position;
+            }
+            if (setTransform) this.gameObject.transform.position = n.gameObject.transform.position;
         }
     }
 }
