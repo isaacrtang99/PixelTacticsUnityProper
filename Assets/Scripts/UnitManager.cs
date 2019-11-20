@@ -16,6 +16,7 @@ public class UnitManager : MonoBehaviour
     public bool gameStarted;
     float addCooldown = 0.0f;
     float resetCooldown = 0.0f;
+    float wonCooldown = 1.0f;
     int money = 10;
     int level = 0;
     int onBoard;
@@ -64,11 +65,16 @@ public class UnitManager : MonoBehaviour
         {
             if(enemies.Count == 0)
             {
-                money += 3;
-                money += Mathf.Max(0,8 - onBoard);
-                level++;
-                CreateNewStage(level);
-                gameStarted = false;
+                wonCooldown -= Time.deltaTime;
+                if (wonCooldown <= 0.0f)
+                {
+                    money += 3;
+                    money += Mathf.Max(0, 8 - onBoard);
+                    level++;
+                    CreateNewStage(level);
+                    gameStarted = false;
+                    wonCooldown = 1.0f;
+                }
             }
         }
         /*for (int i = 0; i < bench.Count; i++)
