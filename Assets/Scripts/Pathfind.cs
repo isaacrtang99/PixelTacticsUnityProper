@@ -39,7 +39,6 @@ public class Pathfind : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
     }
     public bool PathFinder(GameObject startNode, GameObject goalNode)
     {
@@ -119,7 +118,7 @@ public class Pathfind : MonoBehaviour
             mPrevNode = startNode;
             GameObject n = mTargetNode;
             mPath.Add(mTargetNode);
-            while (nodeValues[n].parent != null && n != startNode)
+            while (nodeValues[n].parent != null && n.GetComponent<Node>() != startNode.GetComponent<Node>())
             {
                 Debug.Log("Added to mPath");
                 n = nodeValues[n].parent;
@@ -135,12 +134,11 @@ public class Pathfind : MonoBehaviour
     {
         Node cNode = currNode.GetComponent<Node>();
         Node pNode = parentNode.GetComponent<Node>();
-        return nodeValues[currNode].g + (cNode.indices.x - pNode.indices.x + cNode.indices.y - pNode.indices.y);
+        return nodeValues[parentNode].g + (cNode.indices.x - pNode.indices.x + cNode.indices.y - pNode.indices.y);
     }
     int CalculateH(GameObject currNode, GameObject endNode)
     {
         Node cNode = currNode.GetComponent<Node>();
-        if (endNode == null) Debug.Log("ASDFASDFAFDSAf");
         Node eNode = endNode.GetComponent<Node>();
         return (eNode.indices.x - cNode.indices.x) + (eNode.indices.y - cNode.indices.y);
     }

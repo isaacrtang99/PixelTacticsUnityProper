@@ -21,6 +21,7 @@ public class Character : MonoBehaviour
     Color c_start = Color.white;
     Color c;
     Color c_end = Color.red;
+    HealthBar mHB;
 
     void Start()
     {

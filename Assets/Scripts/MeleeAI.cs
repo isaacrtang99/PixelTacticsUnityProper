@@ -9,9 +9,8 @@ public class MeleeAI : MonoBehaviour
 
     bool isDead = false;
     bool isMoving = false;
-    public float moveTimer = 0.0f;
-    float attackTimer = 0.0f;
-    Node oldEndNode = null;
+    public float actionTimer = 0.0f;
+    public Node oldEndNode = null;
     Vector3 prevPos;
     Vector3 currPos;
     Pathfind pathfinder;
@@ -30,12 +29,12 @@ public class MeleeAI : MonoBehaviour
     void Update()
     {
         string targetType = "";
-        moveTimer -= Time.deltaTime;
-        attackTimer -= Time.deltaTime;
+        actionTimer -= Time.deltaTime;
         GameObject owner = this.gameObject;
         GameObject nodeManager = GameObject.Find("NodeManager");
         GameObject unitManager = GameObject.Find("UnitManager");
         List<List<GameObject>> board = nodeManager.GetComponent<NodeManager>().board;
+        if (actionTimer > 0.0f) return;
         if (this.gameObject.GetComponent<Character>().type == "ally")
         {
             targets = unitManager.GetComponent<UnitManager>().enemies;
@@ -63,7 +62,6 @@ public class MeleeAI : MonoBehaviour
                 {
                     if(n.GetUnit().type == targetType)
                     {
-                        Debug.Log("Found enemy to attack");
                         pathfinder.mState = MeleeState.Attack;
                         targetAttackNode = n;
                         break;
@@ -73,6 +71,7 @@ public class MeleeAI : MonoBehaviour
 
             if(this.pathfinder.mState == MeleeState.Move)
             {
+
                 isMoving = true;
                 bool hasFoundTargetSpace = false;
                 Character targetCharacter = null;
@@ -120,45 +119,46 @@ public class MeleeAI : MonoBehaviour
                         }
                     }
                 }
-                bool lerp = true;
-                if(targetNode != oldEndNode)
+                bool lerp = false;
+                //this is where i update the pathfinder :) 
+                pathfinder.PathFinder(gameObject.GetComponent<Character>().currNode.gameObject, targetNode.gameObject);
+
+                if (this.pathfinder.mNextNode != null && this.pathfinder.mNextNode.GetComponent<Node>().currChar!=null)
                 {
-                    oldEndNode = targetNode;
-                    this.pathfinder.PathFinder(gameObject.GetComponent<Character>().currNode.gameObject, oldEndNode.gameObject);
-                    lerp = false;
-                }
-                if(moveTimer <=0.0f && this.pathfinder.mNextNode != null && this.pathfinder.mNextNode.GetComponent<Node>()!=null)
-                {
-                    gameObject.GetComponent<Character>().SetNode(this.pathfinder.mNextNode.GetComponent<Node>());
-                    debugIcon.transform.position = this.pathfinder.mNextNode.GetComponent<Node>().transform.position;
+                    //if (debugIcon != null)debugIcon.transform.position = this.pathfinder.mNextNode.GetComponent<Node>().transform.position;
                     if(this.pathfinder.mPath.Count > 0)
                     {
                         this.pathfinder.mPrevNode = this.pathfinder.mNextNode;
                         this.pathfinder.mNextNode = this.pathfinder.mPath[pathfinder.mPath.Count - 1];
+                        this.gameObject.GetComponent<Character>().SetNode(pathfinder.mNextNode.GetComponent<Node>());
                         this.prevPos = this.pathfinder.mPrevNode.transform.position;
                         this.currPos = this.pathfinder.mNextNode.transform.position;
                         this.pathfinder.mPath.RemoveAt(this.pathfinder.mPath.Count - 1);
-                        moveTimer = 1.0f;
-                    }
-                    else
-                    {
-                        lerp = false;
-                        this.pathfinder.PathFinder(gameObject.GetComponent<Character>().currNode.gameObject, oldEndNode.gameObject);
+                        actionTimer = 1.0f;
                     }
                 }
-                else if (moveTimer > 0 && this.pathfinder.mNextNode != null && lerp)
+                else if (this.pathfinder.PathFinder(gameObject.GetComponent<Character>().currNode.gameObject, targetNode.gameObject)) {
+                    Debug.Log("Tried to find a new path");
+                }
+                else
+                {
+                    Debug.Log("Couldn't find anything to move to, defaulting");
+                    Node nextNode = gameObject.GetComponent<Character>().currNode.mAdjacent[0].GetComponent<Node>();
+                    gameObject.GetComponent<Character>().SetNode(nextNode);
+                    actionTimer = 1.0f;
+                }
+                /*else if (moveTimer > 0 && this.pathfinder.mNextNode != null && lerp)
                 {
                     this.transform.position = Vector3.Lerp(this.prevPos, this.currPos, 1 - moveTimer);
-                }
+                }*/
 
             }
             else if(this.pathfinder.mState == MeleeState.Attack)
             {
-                if(attackTimer <= 0.0f)
-                {
-                    attackNode(targetAttackNode);
-                    attackTimer = 1.0f;
-                }
+
+                attackNode(targetAttackNode);
+                actionTimer = 1.0f;
+              
             }
 
         }

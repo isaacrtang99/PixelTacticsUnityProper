@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class UnitManager : MonoBehaviour
 {
     public List<Character> allies;
@@ -16,13 +16,16 @@ public class UnitManager : MonoBehaviour
     public bool gameStarted;
     float addCooldown = 0.0f;
     float resetCooldown = 0.0f;
+    int money = 10;
+    int level = 0;
+    int onBoard;
     // Start is called before the first frame update
 
     void Start()
     {
         allies = new List<Character>();
         enemies = new List<Character>();
-        gameStarted = false;
+        gameStarted = true;
         nodeManager = GameObject.Find("NodeManager");
         board = nodeManager.GetComponent<NodeManager>().board;
         bench = nodeManager.GetComponent<NodeManager>().bench;
@@ -31,59 +34,41 @@ public class UnitManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         addCooldown -= Time.deltaTime;
         resetCooldown -= Time.deltaTime;
-        if (addCooldown < 0.0f && Input.GetKey("a")) 
+        if (addCooldown < 0.0f && Input.GetKey("a") && money > 0) 
         {
             addCooldown = 1.0f;
             AddAlly();
         }
-        if (addCooldown < 0.0f && Input.GetKey("s"))
+        if (addCooldown < 0.0f && Input.GetKey("s") && money > 0)
         {
             addCooldown = 1.0f;
             AddAllyRanged();
         }
-        if (resetCooldown < 0.0f && Input.GetKey("1"))
-        {
-            gameStarted = false;
-            resetCooldown = 1.0f;
-            CreateNewStage1();
-        }
-        if (resetCooldown < 0.0f && Input.GetKey("2"))
-        {
-            gameStarted = false;
-            resetCooldown = 1.0f;
-            CreateNewStage2();
-        }
-        if (resetCooldown < 0.0f && Input.GetKey("3"))
-        {
-            gameStarted = false;
-            resetCooldown = 1.0f;
-            CreateNewStage3();
-        }
-        if (resetCooldown < 0.0f && Input.GetKey("4"))
-        {
-            gameStarted = false;
-            resetCooldown = 1.0f;
-            CreateNewStage4();
-        }
-        if (resetCooldown < 0.0f && Input.GetKey("5"))
-        {
-            gameStarted = false;
-            resetCooldown = 1.0f;
-            CreateNewStage5();
-        }
         if (resetCooldown < 0.0f && Input.GetKey("space") && !gameStarted)
         {
-            int validTargetCount = 0;
+           onBoard = 0;
             foreach (Character c in allies)
             {
-                if (c.currNode.nType == NodeType.Board) validTargetCount++;
+                if (c.currNode.nType == NodeType.Board) onBoard++;
             }
-            if (validTargetCount != 0)
+            if (onBoard != 0)
             {
                 gameStarted = true;
                 startStage();
+            }
+        }
+        if (gameStarted)
+        {
+            if(enemies.Count == 0)
+            {
+                money += 3;
+                money += Mathf.Max(0,8 - onBoard);
+                level++;
+                CreateNewStage(level);
+                gameStarted = false;
             }
         }
         /*for (int i = 0; i < bench.Count; i++)
@@ -108,6 +93,7 @@ public class UnitManager : MonoBehaviour
                 b.GetComponent<Character>().max_health = 1000;
                 allies.Add(b.GetComponent<Character>());
                 bench[i].GetComponent<Node>().SetUnit(b.GetComponent<Character>());
+                money--;
                 break;
             }
         }
@@ -125,11 +111,12 @@ public class UnitManager : MonoBehaviour
                 b.GetComponent<Character>().max_health = 800;
                 allies.Add(b.GetComponent<Character>());
                 bench[i].GetComponent<Node>().SetUnit(b.GetComponent<Character>());
+                money--;
                 break;
             }
         }
     }
-    void CreateNewStage()
+    void CreateNewStage(int level)
     {
     
         //wipe the stage
@@ -152,10 +139,33 @@ public class UnitManager : MonoBehaviour
                 }
             }
         }
+        if(level == 1)
+        {
+            CreateNewStage1();
+        }
+        else if(level == 2)
+        {
+            CreateNewStage2();
+        }
+        else if(level == 3)
+        {
+            CreateNewStage3();
+        }
+        else if(level == 4)
+        {
+            CreateNewStage4();
+        }
+        else if(level == 5)
+        {
+            CreateNewStage5();
+        }
+        else
+        {
+            CreateNewStage5();
+        }
     }
     void CreateNewStage1()
     {
-        CreateNewStage();
         List<GameObject> targetSlots = new List<GameObject>();
         targetSlots.Add(board[0][4]);
         targetSlots.Add(board[2][4]);
@@ -175,7 +185,6 @@ public class UnitManager : MonoBehaviour
     }
     void CreateNewStage2()
     {
-        CreateNewStage();
         List<GameObject> targetSlots = new List<GameObject>();
         targetSlots.Add(board[0][7]);
         targetSlots.Add(board[2][7]);
@@ -195,7 +204,6 @@ public class UnitManager : MonoBehaviour
     }
     void CreateNewStage3()
     {
-        CreateNewStage();
         List<GameObject> targetRangedSlots = new List<GameObject>();
         targetRangedSlots.Add(board[1][7]);
         targetRangedSlots.Add(board[3][7]);
@@ -232,7 +240,6 @@ public class UnitManager : MonoBehaviour
     }
     void CreateNewStage4()
     {
-        CreateNewStage();
         List<GameObject> targetRangedSlots = new List<GameObject>();
         targetRangedSlots.Add(board[3][6]);
         targetRangedSlots.Add(board[4][6]);
@@ -269,7 +276,6 @@ public class UnitManager : MonoBehaviour
     }
     void CreateNewStage5()
     {
-        CreateNewStage();
         List<GameObject> targetRangedSlots = new List<GameObject>();
         targetRangedSlots.Add(board[1][5]);
         targetRangedSlots.Add(board[3][5]);

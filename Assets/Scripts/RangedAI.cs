@@ -6,8 +6,7 @@ public class RangedAI : MonoBehaviour
 {
     bool isDead = false;
     bool isMoving = false;
-    public float moveTimer = 0.0f;
-    public float attackTimer = 0.0f;
+    public float actionTimer = 0.0f;
     Node oldEndNode = null;
     Pathfind pathfinder;
     public List<Character> targets;
@@ -24,12 +23,12 @@ public class RangedAI : MonoBehaviour
     void Update()
     {
         string targetType = "";
-        moveTimer -= Time.deltaTime;
-        attackTimer -= Time.deltaTime;
+        actionTimer -= Time.deltaTime;
         GameObject owner = this.gameObject;
         GameObject nodeManager = GameObject.Find("NodeManager");
         GameObject unitManager = GameObject.Find("UnitManager");
         List<List<GameObject>> board = nodeManager.GetComponent<NodeManager>().board;
+        if (actionTimer > 0.0f) return;
         if (this.gameObject.GetComponent<Character>().type == "ally")
         {
             targets = unitManager.GetComponent<UnitManager>().enemies;
@@ -69,7 +68,6 @@ public class RangedAI : MonoBehaviour
 
             if (this.pathfinder.mState == MeleeState.Move)
             {
-                Debug.Log("Randed moving");
                 isMoving = true;
                 bool hasFoundTargetSpace = false;
                 Character targetCharacter = null;
@@ -117,20 +115,16 @@ public class RangedAI : MonoBehaviour
                         }
                     }
                 }
-                if (targetNode != oldEndNode)
+                this.pathfinder.PathFinder(gameObject.GetComponent<Character>().currNode.gameObject, targetNode.gameObject);
+                if (this.pathfinder.mNextNode != null && this.pathfinder.mNextNode.GetComponent<Node>() != null)
                 {
-                    oldEndNode = targetNode;
-                    this.pathfinder.PathFinder(gameObject.GetComponent<Character>().currNode.gameObject, oldEndNode.gameObject);
-                }
-                if (moveTimer <= 0.0f && this.pathfinder.mNextNode != null && this.pathfinder.mNextNode.GetComponent<Node>() != null)
-                {
-                    gameObject.GetComponent<Character>().SetNode(this.pathfinder.mNextNode.GetComponent<Node>());
                     if (this.pathfinder.mPath.Count > 0)
                     {
                         this.pathfinder.mPrevNode = this.pathfinder.mNextNode;
                         this.pathfinder.mNextNode = this.pathfinder.mPath[pathfinder.mPath.Count - 1];
                         this.pathfinder.mPath.RemoveAt(this.pathfinder.mPath.Count - 1);
-                        moveTimer = 1.0f;
+                        gameObject.GetComponent<Character>().SetNode(this.pathfinder.mNextNode.GetComponent<Node>());
+                        actionTimer = 1.0f;
                     }
                     else
                     {
@@ -141,11 +135,8 @@ public class RangedAI : MonoBehaviour
             }
             else if (this.pathfinder.mState == MeleeState.Attack)
             {
-                if (attackTimer <= 0.0f)
-                {
-                    attackNode(targetAttackNode);
-                    attackTimer = 1.0f;
-                }
+                attackNode(targetAttackNode);
+                actionTimer = 1.0f;
             }
         }
     }
