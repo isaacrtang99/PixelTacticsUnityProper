@@ -16,7 +16,7 @@ public class UnitManager : MonoBehaviour
     public bool gameStarted;
     float addCooldown = 0.0f;
     float resetCooldown = 0.0f;
-    int money = 10;
+    public static int money = 10;
     int level = 0;
     int onBoard;
     // Start is called before the first frame update
@@ -346,6 +346,11 @@ public class UnitManager : MonoBehaviour
                 enemies.RemoveAt(i);
             }
         }
+    }
+
+    public static int GetMoney()
+    {
+        return money;
     }
 
 }
