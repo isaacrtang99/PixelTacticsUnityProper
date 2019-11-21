@@ -10,7 +10,7 @@ public enum NodeType
 public class Node : MonoBehaviour
 {
     // Start is called before the first frame update
-    public List<GameObject> mAdjacent;
+    public List<Node> mAdjacent;
     public NodeType nType;
     public Vector2Int indices;
     public Character currChar = null;

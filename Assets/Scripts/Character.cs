@@ -41,13 +41,12 @@ public class Character : MonoBehaviour
         health -= i;
         if(health <= 0)
         {
-            GameObject unitManager = GameObject.Find("UnitManager");
             if (type == "ally") {
-                unitManager.GetComponent<UnitManager>().RemoveAlly(this);
+                UnitManager.instance.RemoveAlly(this);
             }
             else
             {
-                unitManager.GetComponent<UnitManager>().RemoveEnemy(this);
+                UnitManager.instance.RemoveEnemy(this);
             }
             Destroy(this.gameObject);
         }

@@ -9,7 +9,7 @@ public enum MeleeState
 }
 public class PathValues
 {
-    public GameObject parent = null;
+    public Node parent = null;
     public int g = int.MaxValue;
     public int h = int.MaxValue;
     public int f = int.MaxValue;
@@ -17,48 +17,48 @@ public class PathValues
 }
 public class Pathfind : MonoBehaviour
 {
-    public GameObject mPrevNode;
-    public GameObject mNextNode;
-    public GameObject mTargetNode;
-    public List<GameObject> mPath;
-    Dictionary<GameObject, PathValues> nodeValues;
-    List<GameObject> openSet;
+    public Node mPrevNode;
+    public Node mNextNode;
+    public Node mTargetNode;
+    public List<Node> mPath;
+    Dictionary<Node, PathValues> nodeValues;
+    List<Node> openSet;
     public MeleeState mState;
     float moveTimer;
     // Start is called before the first frame update
     void Start()
     {
-        openSet = new List<GameObject>();
+        openSet = new List<Node>();
         mState = MeleeState.Move;
         mPrevNode = null;
         mNextNode = null;
         mTargetNode = null;
-        nodeValues = new Dictionary<GameObject, PathValues>();
+        nodeValues = new Dictionary<Node, PathValues>();
     }
 
     // Update is called once per frame
     void Update()
     {
     }
-    public bool PathFinder(GameObject startNode, GameObject goalNode)
+    public bool PathFinder(Node startNode, Node goalNode)
     {
         mPath.Clear();
         openSet.Clear();
         nodeValues.Clear();
         if (goalNode == null) return false;
-        GameObject currentNode = startNode;
+        Node currentNode = startNode;
         PathValues pV = new PathValues();
         nodeValues.Add(currentNode, pV);
         nodeValues[currentNode].inClosed = true;
         nodeValues[currentNode].g = 0;
         do
         {
-            Node node = currentNode.GetComponent<Node>();
+            Node node = currentNode;
             for (int i = 0; i < node.mAdjacent.Count; i++)
             {
-                if (node.mAdjacent[i].GetComponent<Node>().currChar == null)
+                if (node.mAdjacent[i].currChar == null)
                 {
-                    GameObject gO = node.mAdjacent[i];
+                    Node gO = node.mAdjacent[i];
                     if (!nodeValues.ContainsKey(gO))
                     {
                         PathValues pv = new PathValues();
@@ -93,9 +93,9 @@ public class Pathfind : MonoBehaviour
                 }
             }
             if (openSet.Count == 0) break;
-            GameObject smallest = openSet[0];
+            Node smallest = openSet[0];
             int minF = nodeValues[openSet[0]].f;
-            foreach (GameObject g in openSet)
+            foreach (Node g in openSet)
             {
                 if (!nodeValues.ContainsKey(g))
                 {
@@ -116,9 +116,9 @@ public class Pathfind : MonoBehaviour
         {
             mTargetNode = goalNode;
             mPrevNode = startNode;
-            GameObject n = mTargetNode;
+            Node n = mTargetNode;
             mPath.Add(mTargetNode);
-            while (nodeValues[n].parent != null && n.GetComponent<Node>() != startNode.GetComponent<Node>())
+            while (nodeValues[n].parent != null && n != startNode)
             {
                 Debug.Log("Added to mPath");
                 n = nodeValues[n].parent;
@@ -130,16 +130,12 @@ public class Pathfind : MonoBehaviour
         }
         return false;
     }
-    int CalculateG(GameObject currNode, GameObject parentNode)
+    int CalculateG(Node currNode, Node parentNode)
     {
-        Node cNode = currNode.GetComponent<Node>();
-        Node pNode = parentNode.GetComponent<Node>();
-        return nodeValues[parentNode].g + (cNode.indices.x - pNode.indices.x + cNode.indices.y - pNode.indices.y);
+        return nodeValues[parentNode].g + (currNode.indices.x - parentNode.indices.x + currNode.indices.y - parentNode.indices.y);
     }
-    int CalculateH(GameObject currNode, GameObject endNode)
+    int CalculateH(Node currNode, Node endNode)
     {
-        Node cNode = currNode.GetComponent<Node>();
-        Node eNode = endNode.GetComponent<Node>();
-        return (eNode.indices.x - cNode.indices.x) + (eNode.indices.y - cNode.indices.y);
+        return (endNode.indices.x - currNode.indices.x) + (endNode.indices.y - currNode.indices.y);
     }
 }
