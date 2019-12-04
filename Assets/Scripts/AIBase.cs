@@ -57,6 +57,7 @@ public abstract class AIBase : MonoBehaviour
 
         if (mCharacter.currNode != null && mCharacter.currNode.nType != NodeType.Bench && mCharacter.cState == CharacterState.Active && targets.Count > 0)
         {
+            this.actionTimer = 1f;
             this.pathfinder.mState = this.calculateState();
             if (this.pathfinder.mState == MeleeState.Stay) return;
             if (this.pathfinder.mState == MeleeState.Move)
@@ -121,7 +122,6 @@ public abstract class AIBase : MonoBehaviour
                         this.currPos = this.pathfinder.mNextNode.transform.position;
                         this.pathfinder.mPath.RemoveAt(this.pathfinder.mPath.Count - 1);
                         mCharacter.SetNode(this.pathfinder.mNextNode);
-                        actionTimer = 1.0f;
                     }
                     else
                     {
@@ -138,11 +138,6 @@ public abstract class AIBase : MonoBehaviour
             {
                 this.prevPos = this.currPos;
                 attackNode(targetAttackNode);
-                actionTimer = 1.0f;
-            }
-            else if (this.pathfinder.mState == MeleeState.Stay)
-            {
-                this.prevPos = this.currPos;
             }
         }
     }
