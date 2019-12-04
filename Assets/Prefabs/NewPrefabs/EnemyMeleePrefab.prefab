@@ -77,6 +77,11 @@ PrefabInstance:
       propertyPath: max_health
       value: 1000
       objectReference: {fileID: 0}
+    - target: {fileID: 166673979371724257, guid: df9ed6d4eb54a774d928008d08a84dbe,
+        type: 3}
+      propertyPath: damage
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 6689675316597104576, guid: df9ed6d4eb54a774d928008d08a84dbe,
         type: 3}
       propertyPath: m_Sprite
