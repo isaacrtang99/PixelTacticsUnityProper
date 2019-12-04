@@ -16,8 +16,8 @@ public class UnitManager : MonoBehaviour
     public bool gameStarted;
     float addCooldown = 0.0f;
     float resetCooldown = 0.0f;
-    public static int money = 10;
-    public static int level = 0;
+    public static int money = 0;
+    public static int level = 100;
     int onBoard;
 
     private void Awake()
@@ -145,7 +145,8 @@ public class UnitManager : MonoBehaviour
         }
         Debug.Log(level);
         int difficulty = level * 3;
-        while(difficulty > 0)
+        int moreDifficulty = difficulty;
+        while(difficulty > 0 && enemies.Count < 32)
         {
             Debug.Log(difficulty);
             if (difficulty == 1)
@@ -216,14 +217,20 @@ public class UnitManager : MonoBehaviour
     {
         for(int i = 4; i < 8;i++)
         {
-            List<int> available = GetAvailable(i);
+            int j = i;
+            if (j < 7)
+            {
+                j = Random.Range(j, j + 2);
+                if (GetAvailable(j).Count == 0) j = i;
+            }
+            List<int> available = GetAvailable(j);
             if (available.Count == 0) continue;
             int row = Random.Range(0,available.Count);
             row = available[row];
-            GameObject b = Instantiate(enemySpawnPrefab, NodeManager.instance.board[row][i].transform.position, Quaternion.identity) as GameObject;
-            b.GetComponent<Character>().SetNode(NodeManager.instance.board[row][i]);
+            GameObject b = Instantiate(enemySpawnPrefab, NodeManager.instance.board[row][j].transform.position, Quaternion.identity) as GameObject;
+            b.GetComponent<Character>().SetNode(NodeManager.instance.board[row][j]);
             enemies.Add(b.GetComponent<Character>());
-            NodeManager.instance.board[row][i].SetUnit(b.GetComponent<Character>());
+            NodeManager.instance.board[row][j].SetUnit(b.GetComponent<Character>());
             break;
         }
     }
@@ -234,7 +241,8 @@ public class UnitManager : MonoBehaviour
             int j = i;
             if(j > 4)
             {
-
+                j = Random.Range(j - 1, j + 1);
+                if (GetAvailable(j).Count == 0) j = i;
             }
             List<int> available = GetAvailable(j);
             if (available.Count == 0) continue;
