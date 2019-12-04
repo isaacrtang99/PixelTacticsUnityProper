@@ -1659,7 +1659,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1674119913
 GameObject:
@@ -1776,17 +1776,17 @@ MonoBehaviour:
   allies: []
   enemies: []
   allyCopies: []
-  allySpawnPrefab: {fileID: 2308631066961555477, guid: 2586126f0e7d3354686f2f6e5627e6e7,
+  allySpawnPrefab: {fileID: 5184003083564572228, guid: a4001380ffc345345b25cd22d9e36d15,
     type: 3}
-  allySpawnPrefabRanged: {fileID: 5109617172988472797, guid: d1baf40caa746e74e99f44b6e4aea101,
+  allySpawnPrefabRanged: {fileID: 5551026909432733377, guid: 8beacc5645c82264e91b27f590456716,
     type: 3}
-  allyAssassinPrefab: {fileID: 7910652297166524810, guid: a98355f2a900985469d687a1694ed473,
+  allyAssassinPrefab: {fileID: 3546649615139471938, guid: 2b471c6f8b2011047a11f1ecf14c6304,
     type: 3}
-  enemySpawnPrefab: {fileID: 8047813486896447136, guid: 9abac7a3c325331438eea8c011875b17,
+  enemySpawnPrefab: {fileID: 3298469801359523785, guid: a98ca94cb039f95489a684413f87ff35,
     type: 3}
-  enemySpawnPrefabRanged: {fileID: 7390707537555840511, guid: e47760d8360927940b49405f2d27b1a8,
+  enemySpawnPrefabRanged: {fileID: 2549063604585255575, guid: c754f047515ebe64797575f8f7a56708,
     type: 3}
-  enemyAssassinPrefab: {fileID: 2349805715686058367, guid: 8397292b26037bb4d91c3eef2b6398ef,
+  enemyAssassinPrefab: {fileID: 5167783053365595547, guid: a5e0f3d5c822ee943842a6a2b1e35f27,
     type: 3}
   gameStarted: 0
 --- !u!212 &1717649046

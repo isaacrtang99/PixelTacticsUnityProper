@@ -14,18 +14,32 @@ public class Character : MonoBehaviour
     public Node currNode;
     public string type;
     public CharacterState cState;
-    public float health;
+    private float health;
     public float max_health;
-    //public HealthBar healthBar;
     SpriteRenderer sR;
     Color c_start = Color.white;
     Color c;
     Color c_end = Color.red;
-    HealthBar mHB;
+
+    [SerializeField]
+    private Transform healthBarTransform;
+
+    public float Health
+    {
+        get
+        {
+            return this.health;
+        }
+        set
+        {
+            this.health = value;
+            if (this.healthBarTransform != null) this.healthBarTransform.localScale = new Vector3(this.health/this.max_health, 1f, 1f);
+        }
+    }
 
     void Start()
     {
-        sR = gameObject.GetComponent<SpriteRenderer>();
+        sR = gameObject.GetComponentInChildren<SpriteRenderer>();
         c_start = sR.color;
         
         //healthBar.SetSize(0.5f);
@@ -35,11 +49,12 @@ public class Character : MonoBehaviour
         this.prevPosition = this.transform.position;
         this.prevNode = null;
         this.cState = CharacterState.Paused;
+        this.Health = this.max_health;
     }
     public void TakeDamage(int i)
     {
-        health -= i;
-        if(health <= 0)
+        this.Health -= i;
+        if(this.Health <= 0)
         {
             if (type == "ally") {
                 UnitManager.instance.RemoveAlly(this);
@@ -50,7 +65,7 @@ public class Character : MonoBehaviour
             }
             Destroy(this.gameObject);
         }
-        c = Color.Lerp(c_start, c_end, (max_health - health) / max_health);
+        c = Color.Lerp(c_start, c_end, (max_health - this.Health) / max_health);
 
         sR.color = c;
     }
