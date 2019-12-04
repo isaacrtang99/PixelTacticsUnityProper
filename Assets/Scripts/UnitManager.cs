@@ -8,6 +8,7 @@ public class UnitManager : MonoBehaviour
 
     public List<Character> allies;
     public List<Character> enemies;
+    public List<Character> allyCopies;
     public GameObject allySpawnPrefab;
     public GameObject allySpawnPrefabRanged;
     public GameObject enemySpawnPrefab;
@@ -17,7 +18,7 @@ public class UnitManager : MonoBehaviour
     float addCooldown = 0.0f;
     float resetCooldown = 0.0f;
     public static int money = 0;
-    public static int level = 100;
+    public static int level = 10;
     int onBoard;
 
     private void Awake()
@@ -50,13 +51,6 @@ public class UnitManager : MonoBehaviour
             }
         }
 
-        /*for (int i = 0; i < NodeManager.instance.bench.Count; i++)
-        {
-            if (NodeManager.instance.bench[i].GetComponent<Node>().GetUnit() != null)
-            {
-                //NodeManager.instance.bench[i].GetComponent<Node>().GetUnit().gameObject.SetActive(false);
-            }
-        }*/
     }
 
     public void StartGameButtonClick()
@@ -144,7 +138,7 @@ public class UnitManager : MonoBehaviour
             }
         }
         Debug.Log(level);
-        int difficulty = level * 3;
+        int difficulty = 5 + (int)(level * 1.5);
         int moreDifficulty = difficulty;
         while(difficulty > 0 && enemies.Count < 32)
         {
