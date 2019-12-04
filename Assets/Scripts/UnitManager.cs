@@ -12,11 +12,12 @@ public class UnitManager : MonoBehaviour
     public GameObject allySpawnPrefabRanged;
     public GameObject enemySpawnPrefab;
     public GameObject enemySpawnPrefabRanged;
+    public List<List<Node>> boardNodes;
     public bool gameStarted;
     float addCooldown = 0.0f;
     float resetCooldown = 0.0f;
     public static int money = 10;
-    int level = 0;
+    public static int level = 0;
     int onBoard;
 
     private void Awake()
@@ -42,8 +43,7 @@ public class UnitManager : MonoBehaviour
         {
             if (enemies.Count == 0)
             {
-                money += 3;
-                money += Mathf.Max(0, 8 - onBoard);
+                money += 5;
                 level++;
                 CreateNewStage(level);
                 gameStarted = false;
@@ -149,180 +149,12 @@ public class UnitManager : MonoBehaviour
                 }
             }
         }
-        if (level == 1)
+        int difficulty = level * 3;
+        while(difficulty >= 0)
         {
-            CreateNewStage1();
-        }
-        else if (level == 2)
-        {
-            CreateNewStage2();
-        }
-        else if (level == 3)
-        {
-            CreateNewStage3();
-        }
-        else if (level == 4)
-        {
-            CreateNewStage4();
-        }
-        else if (level == 5)
-        {
-            CreateNewStage5();
-        }
-        else
-        {
-            CreateNewStage5();
-        }
-    }
-    void CreateNewStage1()
-    {
-        List<Node> targetSlots = new List<Node>();
-        targetSlots.Add(NodeManager.instance.board[0][4]);
-        targetSlots.Add(NodeManager.instance.board[2][4]);
-        targetSlots.Add(NodeManager.instance.board[4][4]);
-        targetSlots.Add(NodeManager.instance.board[6][4]);
 
-        for (int i = 0; i < targetSlots.Count; i++)
-        {
-            GameObject b = Instantiate(enemySpawnPrefab, targetSlots[i].transform.position, Quaternion.identity) as GameObject;
-            b.GetComponent<Character>().SetNode(targetSlots[i]);
-            b.GetComponent<Character>().type = "enemy";
-            b.GetComponent<Character>().health = 1000;
-            b.GetComponent<Character>().max_health = 1000;
-            enemies.Add(b.GetComponent<Character>());
-            targetSlots[i].SetUnit(b.GetComponent<Character>());
         }
-    }
-    void CreateNewStage2()
-    {
-        List<Node> targetSlots = new List<Node>();
-        targetSlots.Add(NodeManager.instance.board[0][7]);
-        targetSlots.Add(NodeManager.instance.board[2][7]);
-        targetSlots.Add(NodeManager.instance.board[4][7]);
-        targetSlots.Add(NodeManager.instance.board[6][7]);
-
-        for (int i = 0; i < targetSlots.Count; i++)
-        {
-            GameObject b = Instantiate(enemySpawnPrefabRanged, targetSlots[i].transform.position, Quaternion.identity) as GameObject;
-            b.GetComponent<Character>().SetNode(targetSlots[i]);
-            b.GetComponent<Character>().type = "enemy";
-            b.GetComponent<Character>().health = 800;
-            b.GetComponent<Character>().max_health = 800;
-            enemies.Add(b.GetComponent<Character>());
-            targetSlots[i].SetUnit(b.GetComponent<Character>());
-        }
-    }
-    void CreateNewStage3()
-    {
-        List<Node> targetRangedSlots = new List<Node>();
-        targetRangedSlots.Add(NodeManager.instance.board[1][7]);
-        targetRangedSlots.Add(NodeManager.instance.board[3][7]);
-        targetRangedSlots.Add(NodeManager.instance.board[5][7]);
-        targetRangedSlots.Add(NodeManager.instance.board[7][7]);
-
-        List<Node> targetSlots = new List<Node>();
-        targetSlots.Add(NodeManager.instance.board[0][4]);
-        targetSlots.Add(NodeManager.instance.board[2][4]);
-        targetSlots.Add(NodeManager.instance.board[4][4]);
-        targetSlots.Add(NodeManager.instance.board[6][4]);
-
-        for (int i = 0; i < targetSlots.Count; i++)
-        {
-            GameObject b = Instantiate(enemySpawnPrefab, targetSlots[i].transform.position, Quaternion.identity) as GameObject;
-            b.GetComponent<Character>().SetNode(targetSlots[i]);
-            b.GetComponent<Character>().type = "enemy";
-            b.GetComponent<Character>().health = 1000;
-            b.GetComponent<Character>().max_health = 1000;
-            enemies.Add(b.GetComponent<Character>());
-            targetSlots[i].SetUnit(b.GetComponent<Character>());
-        }
-
-        for (int i = 0; i < targetRangedSlots.Count; i++)
-        {
-            GameObject b = Instantiate(enemySpawnPrefabRanged, targetRangedSlots[i].transform.position, Quaternion.identity) as GameObject;
-            b.GetComponent<Character>().SetNode(targetRangedSlots[i]);
-            b.GetComponent<Character>().type = "enemy";
-            b.GetComponent<Character>().health = 800;
-            b.GetComponent<Character>().max_health = 800;
-            enemies.Add(b.GetComponent<Character>());
-            targetRangedSlots[i].SetUnit(b.GetComponent<Character>());
-        }
-    }
-    void CreateNewStage4()
-    {
-        List<Node> targetRangedSlots = new List<Node>();
-        targetRangedSlots.Add(NodeManager.instance.board[3][6]);
-        targetRangedSlots.Add(NodeManager.instance.board[4][6]);
-        targetRangedSlots.Add(NodeManager.instance.board[5][6]);
-        targetRangedSlots.Add(NodeManager.instance.board[6][6]);
-
-        List<Node> targetSlots = new List<Node>();
-        targetSlots.Add(NodeManager.instance.board[3][4]);
-        targetSlots.Add(NodeManager.instance.board[4][4]);
-        targetSlots.Add(NodeManager.instance.board[5][4]);
-        targetSlots.Add(NodeManager.instance.board[6][4]);
-
-        for (int i = 0; i < targetSlots.Count; i++)
-        {
-            GameObject b = Instantiate(enemySpawnPrefab, targetSlots[i].transform.position, Quaternion.identity) as GameObject;
-            b.GetComponent<Character>().SetNode(targetSlots[i]);
-            b.GetComponent<Character>().type = "enemy";
-            b.GetComponent<Character>().health = 1000;
-            b.GetComponent<Character>().max_health = 1000;
-            enemies.Add(b.GetComponent<Character>());
-            targetSlots[i].SetUnit(b.GetComponent<Character>());
-        }
-
-        for (int i = 0; i < targetRangedSlots.Count; i++)
-        {
-            GameObject b = Instantiate(enemySpawnPrefabRanged, targetRangedSlots[i].transform.position, Quaternion.identity) as GameObject;
-            b.GetComponent<Character>().SetNode(targetRangedSlots[i]);
-            b.GetComponent<Character>().type = "enemy";
-            b.GetComponent<Character>().health = 800;
-            b.GetComponent<Character>().max_health = 800;
-            enemies.Add(b.GetComponent<Character>());
-            targetRangedSlots[i].SetUnit(b.GetComponent<Character>());
-        }
-    }
-    void CreateNewStage5()
-    {
-        List<Node> targetRangedSlots = new List<Node>();
-        targetRangedSlots.Add(NodeManager.instance.board[1][5]);
-        targetRangedSlots.Add(NodeManager.instance.board[3][5]);
-        targetRangedSlots.Add(NodeManager.instance.board[5][5]);
-        targetRangedSlots.Add(NodeManager.instance.board[7][5]);
-        targetRangedSlots.Add(NodeManager.instance.board[0][6]);
-        targetRangedSlots.Add(NodeManager.instance.board[2][6]);
-        targetRangedSlots.Add(NodeManager.instance.board[4][6]);
-        targetRangedSlots.Add(NodeManager.instance.board[6][6]);
-
-        List<Node> targetSlots = new List<Node>();
-        targetSlots.Add(NodeManager.instance.board[0][4]);
-        targetSlots.Add(NodeManager.instance.board[2][4]);
-        targetSlots.Add(NodeManager.instance.board[4][4]);
-        targetSlots.Add(NodeManager.instance.board[6][4]);
-
-        for (int i = 0; i < targetSlots.Count; i++)
-        {
-            GameObject b = Instantiate(enemySpawnPrefab, targetSlots[i].transform.position, Quaternion.identity) as GameObject;
-            b.GetComponent<Character>().SetNode(targetSlots[i]);
-            b.GetComponent<Character>().type = "enemy";
-            b.GetComponent<Character>().health = 1000;
-            b.GetComponent<Character>().max_health = 1000;
-            enemies.Add(b.GetComponent<Character>());
-            targetSlots[i].SetUnit(b.GetComponent<Character>());
-        }
-
-        for (int i = 0; i < targetRangedSlots.Count; i++)
-        {
-            GameObject b = Instantiate(enemySpawnPrefabRanged, targetRangedSlots[i].transform.position, Quaternion.identity) as GameObject;
-            b.GetComponent<Character>().SetNode(targetRangedSlots[i]);
-            b.GetComponent<Character>().type = "enemy";
-            b.GetComponent<Character>().health = 800;
-            b.GetComponent<Character>().max_health = 800;
-            enemies.Add(b.GetComponent<Character>());
-            targetRangedSlots[i].SetUnit(b.GetComponent<Character>());
-        }
+      
     }
     void startStage()
     {
@@ -362,5 +194,30 @@ public class UnitManager : MonoBehaviour
     {
         return money;
     }
+    public void SpawnSkel()
+    {
+        for(int i = 4; i < 8;i++)
+        {
+            List<int> available = GetAvailable(i);
+            if (available.Count == 0) continue;
+            int row = Random.Range(0,available.Count);
 
+        }
+    }
+    public void SpawnBat()
+    {
+
+    }
+    public List<int> GetAvailable(int col)
+    {
+        List<int> available = new List<int>();
+        for(int i = 0; i < 8; i++)
+        {
+            if(NodeManager.instance.board[i][col].GetUnit() == null)
+            {
+                available.Add(i);
+            }
+        }
+        return available;
+    }
 }
