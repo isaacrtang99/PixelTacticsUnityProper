@@ -59,9 +59,10 @@ public class AssassinAI : AIBase
             if (jumpTarget != null)
             {
                 this.jumped = true;
-                this.mCharacter.SetNode(jumpTarget, true);
+                this.mCharacter.SetNode(jumpTarget);
                 this.mCharacter.prevNode = this.mCharacter.currNode;
-                this.currPos = this.transform.position;
+                this.prevPos = this.transform.position;
+                this.currPos = this.mCharacter.currNode.transform.position;
                 return MeleeState.Stay;
             }
             else return MeleeState.Move;
