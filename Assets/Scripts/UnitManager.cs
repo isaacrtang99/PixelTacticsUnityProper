@@ -66,7 +66,7 @@ public class UnitManager : MonoBehaviour
                 }
                 allyCopies.Clear();
             }
-            else if(allies.Count == 0)
+            else if(alliesDead())
             {
                 CreateNewStage(level);
                 gameStarted = false;
@@ -80,6 +80,16 @@ public class UnitManager : MonoBehaviour
             }
         }
 
+    }
+
+    private bool alliesDead()
+    {
+        if (this.allies == null) return true;
+        foreach (Character c in this.allies)
+        {
+            if (c.currNode.nType == NodeType.Board) return false;
+        }
+        return true;
     }
 
     public void StartGameButtonClick()

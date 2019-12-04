@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a91fd78d00a15b746bdb9d629dfd37c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionTimer: 0.5
+  actionTimer: 0
   oldEndNode: {fileID: 0}
   prevPos: {x: 0, y: 0, z: 0}
   currPos: {x: 0, y: 0, z: 0}
@@ -73,6 +73,37 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: AllyAssassin Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 2102638271215088710, guid: 2d9d832cb09570f448b1bcb2b62b9e0b,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f591866cc2cb46d4a86a2dce13d8e293,
+        type: 3}
+    - target: {fileID: 4418892517753825587, guid: 2d9d832cb09570f448b1bcb2b62b9e0b,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 4418892517753825587, guid: 2d9d832cb09570f448b1bcb2b62b9e0b,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 5190525171468576487, guid: 2d9d832cb09570f448b1bcb2b62b9e0b,
+        type: 3}
+      propertyPath: type
+      value: ally
+      objectReference: {fileID: 0}
+    - target: {fileID: 5190525171468576487, guid: 2d9d832cb09570f448b1bcb2b62b9e0b,
+        type: 3}
+      propertyPath: health
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 5190525171468576487, guid: 2d9d832cb09570f448b1bcb2b62b9e0b,
+        type: 3}
+      propertyPath: max_health
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 8721573066884897647, guid: 2d9d832cb09570f448b1bcb2b62b9e0b,
         type: 3}
@@ -138,37 +169,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2102638271215088710, guid: 2d9d832cb09570f448b1bcb2b62b9e0b,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: f591866cc2cb46d4a86a2dce13d8e293,
-        type: 3}
-    - target: {fileID: 4418892517753825587, guid: 2d9d832cb09570f448b1bcb2b62b9e0b,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 0.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 4418892517753825587, guid: 2d9d832cb09570f448b1bcb2b62b9e0b,
-        type: 3}
-      propertyPath: m_Size.y
-      value: 0.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 5190525171468576487, guid: 2d9d832cb09570f448b1bcb2b62b9e0b,
-        type: 3}
-      propertyPath: type
-      value: ally
-      objectReference: {fileID: 0}
-    - target: {fileID: 5190525171468576487, guid: 2d9d832cb09570f448b1bcb2b62b9e0b,
-        type: 3}
-      propertyPath: health
-      value: 400
-      objectReference: {fileID: 0}
-    - target: {fileID: 5190525171468576487, guid: 2d9d832cb09570f448b1bcb2b62b9e0b,
-        type: 3}
-      propertyPath: max_health
-      value: 400
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5904575476186475611, guid: 2d9d832cb09570f448b1bcb2b62b9e0b, type: 3}

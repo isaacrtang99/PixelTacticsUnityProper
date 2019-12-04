@@ -33,7 +33,7 @@ public class MouseController : MonoBehaviour
         {
             this.nodeUnderMouse = hit.collider.transform.root.GetComponent<Node>();
         }
-        if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 50f, 1 << CharLayer)){
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 50f, 1 << CharLayer)) {
             this.crownUnderMouse = hit.collider.transform.root.GetComponent<CrownObject>();
         }
         if (Input.GetMouseButtonDown(0) && this.draggingCharacter == null &&this.draggingCrown == null && this.characterUnderMouse != null && this.characterUnderMouse.type.Equals("ally" ))
