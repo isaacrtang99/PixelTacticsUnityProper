@@ -11,7 +11,7 @@ public class AssassinAI : AIBase
         if (n == null) return;
         if (n.currChar != null)
         {
-            n.currChar.TakeDamage(200);
+            n.currChar.TakeDamage(this.mCharacter.damage);
         }
     }
 
