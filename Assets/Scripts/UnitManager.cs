@@ -8,7 +8,7 @@ public class UnitManager : MonoBehaviour
 
     public List<Character> allies;
     public List<Character> enemies;
-    public List<Character> allyCopies;
+    public List<GameObject> allyCopies;
     public GameObject allySpawnPrefab;
     public GameObject allySpawnPrefabRanged;
     public GameObject allyAssassinPrefab;
@@ -50,6 +50,25 @@ public class UnitManager : MonoBehaviour
                 level++;
                 CreateNewStage(level);
                 gameStarted = false;
+                for(int i = 0; i < allyCopies.Count; i++)
+                {
+                    allyCopies[i].SetActive(true);
+                    allyCopies[i].GetComponent<Character>().currNode.SetUnit(allyCopies[i].GetComponent<Character>());
+                    allies.Add(allyCopies[i].GetComponent<Character>());
+                }
+                allyCopies.Clear();
+            }
+            else if(allies.Count == 0)
+            {
+                CreateNewStage(level);
+                gameStarted = false;
+                for (int i = 0; i < allyCopies.Count; i++)
+                {
+                    allyCopies[i].SetActive(true);
+                    allyCopies[i].GetComponent<Character>().currNode.SetUnit(allyCopies[i].GetComponent<Character>());
+                    allies.Add(allyCopies[i].GetComponent<Character>());
+                }
+                allyCopies.Clear();
             }
         }
 
@@ -202,6 +221,12 @@ public class UnitManager : MonoBehaviour
                 if (NodeManager.instance.board[i][j].GetUnit() != null)
                 {
                     NodeManager.instance.board[i][j].GetUnit().cState = CharacterState.Active;
+                    if(NodeManager.instance.board[i][j].GetUnit().type == "ally")
+                    {
+                        GameObject g = Instantiate(NodeManager.instance.board[i][j].GetUnit().gameObject) as GameObject;
+                        allyCopies.Add(g);
+                        g.SetActive(false);
+                    }
                 }
             }
         }
