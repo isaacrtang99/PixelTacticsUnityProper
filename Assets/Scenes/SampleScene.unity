@@ -27319,7 +27319,8 @@ MonoBehaviour:
     type: 3}
   enemyAssassinPrefab: {fileID: 5167783053365595547, guid: a5e0f3d5c822ee943842a6a2b1e35f27,
     type: 3}
-  crownPrefab: {fileID: 0}
+  crownPrefab: {fileID: 3430833935258633166, guid: 86dff8fb2ff355f42a4d1d27fdfe297d,
+    type: 3}
   gameStarted: 0
 --- !u!212 &1717649046
 SpriteRenderer:
