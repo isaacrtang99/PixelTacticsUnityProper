@@ -9,6 +9,7 @@ public class Projectile : MonoBehaviour
     public Node targetNode;
     public Character targetCharacter;
     public string color;
+    public float damage;
     SpriteRenderer sR;
     // Start is called before the first frame update
     void Start()
@@ -28,7 +29,7 @@ public class Projectile : MonoBehaviour
         {
             if (targetNode.currChar == targetCharacter && targetCharacter!=null)
             {
-                targetCharacter.TakeDamage(150);
+                targetCharacter.TakeDamage(damage);
             }
             Destroy(this.gameObject);
         }

@@ -15,6 +15,7 @@ public class RangedAI : AIBase
             p.GetComponent<Projectile>().startPosition = this.gameObject.transform.position;
             p.GetComponent<Projectile>().targetNode = n;
             p.GetComponent<Projectile>().targetCharacter = n.currChar;
+            p.GetComponent < Projectile >().damage = gameObject.GetComponent<Character>().damage;
             if (this.mCharacter.type == "enemy")
             {
                 p.GetComponent<Projectile>().color = "green";

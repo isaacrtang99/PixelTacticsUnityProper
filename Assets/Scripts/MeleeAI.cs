@@ -9,7 +9,7 @@ public class MeleeAI : AIBase
         if (n == null) return;
         if (n.currChar != null)
         {
-            n.currChar.TakeDamage(100);
+            n.currChar.TakeDamage(gameObject.GetComponent<Character>().damage);
         }
     }
 

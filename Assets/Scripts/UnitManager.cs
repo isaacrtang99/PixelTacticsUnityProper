@@ -21,6 +21,7 @@ public class UnitManager : MonoBehaviour
     float resetCooldown = 0.0f;
     public static int money = 100;
     public static int level = 0;
+    public static int crownPoints = 0;
     int onBoard;
 
     private void Awake()
@@ -176,8 +177,9 @@ public class UnitManager : MonoBehaviour
             }
         }
         int difficulty = 5 + (int)(level * 1.5);
-        int moreDifficulty = difficulty;
-        while(difficulty > 0 && enemies.Count < 32)
+        int crownsToGive = difficulty / 3;
+        int crownsGiven = 0;
+        while (difficulty > 0 && enemies.Count < 32)
         {
             if (difficulty == 1)
             {
@@ -197,17 +199,26 @@ public class UnitManager : MonoBehaviour
                     SpawnSkel();
                     difficulty -= dif;
                 }
-                else if(dif == 2)
+                else if (dif == 2)
                 {
                     SpawnGoomba();
                     difficulty -= dif;
                 }
-                else if(dif == 3 && level >= 3)
+                else if (dif == 3 && level >= 3)
                 {
                     Debug.Log("WRRYYYYY");
                     SpawnTurtle();
                     difficulty -= dif;
                 }
+            }
+        }
+        while (crownsToGive > 0 && crownsGiven < 96)
+        {
+            int toGive = Random.Range(0, enemies.Count);
+            if (enemies[toGive].crowns < 3)
+            {
+                enemies[toGive].AddCrown();
+                crownsToGive--;
             }
         }
       

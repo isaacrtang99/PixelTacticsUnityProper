@@ -16,6 +16,8 @@ public class Character : MonoBehaviour
     public CharacterState cState;
     private float health;
     public float max_health;
+    public float damage;
+    public int crowns = 0;
     SpriteRenderer sR;
     Color c_start = Color.white;
     Color c;
@@ -23,7 +25,18 @@ public class Character : MonoBehaviour
 
     [SerializeField]
     private Transform healthBarTransform;
+    public void AddCrown()
+    {
+        if (crowns < 3)
+        {
+            crowns++;
+        }
+        float temp_health = max_health;
+        max_health += temp_health * .5f;
+        health += temp_health * .5f;
+        damage += damage * .5f;
 
+    }
     public float Health
     {
         get
@@ -51,7 +64,7 @@ public class Character : MonoBehaviour
         this.cState = CharacterState.Paused;
         this.Health = this.max_health;
     }
-    public void TakeDamage(int i)
+    public void TakeDamage(float i)
     {
         this.Health -= i;
         if(this.Health <= 0)
