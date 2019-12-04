@@ -22,6 +22,7 @@ public class UnitManager : MonoBehaviour
     float resetCooldown = 0.0f;
     public static int money = 100;
     public static int level = 4;
+    public static int playerHealth = 5;
     
     int onBoard;
 
@@ -69,6 +70,15 @@ public class UnitManager : MonoBehaviour
             else if(alliesDead())
             {
                 CreateNewStage(level);
+                playerHealth -= 1;
+                if(playerHealth<0)
+                {
+                    playerHealth = 0;
+                }
+                if (playerHealth <= 0) {
+
+
+                }
                 gameStarted = false;
                 for (int i = 0; i < allyCopies.Count; i++)
                 {
@@ -77,6 +87,10 @@ public class UnitManager : MonoBehaviour
                     allies.Add(allyCopies[i].GetComponent<Character>());
                 }
                 allyCopies.Clear();
+            }
+            else
+            {
+                //playerHealth -= enemies.Count;
             }
         }
 

@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class GoldScript : MonoBehaviour
 {
     // Start is called before the first frame update
-    public static int goldValue = 0;
     Text gold;
 
     void Start()
@@ -20,4 +19,5 @@ public class GoldScript : MonoBehaviour
 
         gold.text = "Gold: " + UnitManager.GetMoney();
     }
+        
 }
