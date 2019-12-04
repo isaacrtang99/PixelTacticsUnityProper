@@ -46,7 +46,7 @@ public class UnitManager : MonoBehaviour
         {
             if (enemies.Count == 0)
             {
-                money += 5;
+                money += 7;
                 level++;
                 CreateNewStage(level);
                 gameStarted = false;
