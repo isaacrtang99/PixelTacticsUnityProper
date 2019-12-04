@@ -20,7 +20,7 @@ public class UnitManager : MonoBehaviour
     public bool gameStarted;
     float addCooldown = 0.0f;
     float resetCooldown = 0.0f;
-    public static int money = 100;
+    public static int money = 5;
     public static int level = 0;
     public static int playerHealth = 5;
     
