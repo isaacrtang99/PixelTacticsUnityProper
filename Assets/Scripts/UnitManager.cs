@@ -19,8 +19,8 @@ public class UnitManager : MonoBehaviour
     public bool gameStarted;
     float addCooldown = 0.0f;
     float resetCooldown = 0.0f;
-    public static int money = 0;
-    public static int level = 10;
+    public static int money = 100;
+    public static int level = 0;
     int onBoard;
 
     private void Awake()
@@ -156,12 +156,10 @@ public class UnitManager : MonoBehaviour
                 }
             }
         }
-        Debug.Log(level);
         int difficulty = 5 + (int)(level * 1.5);
         int moreDifficulty = difficulty;
         while(difficulty > 0 && enemies.Count < 32)
         {
-            Debug.Log(difficulty);
             if (difficulty == 1)
             {
                 SpawnSkel();
@@ -174,16 +172,23 @@ public class UnitManager : MonoBehaviour
             }
             else
             {
-                int dif = Random.Range(1, 3);
+                int dif = Random.Range(1, 4);
                 if (dif == 1)
                 {
                     SpawnSkel();
+                    difficulty -= dif;
                 }
                 else if(dif == 2)
                 {
                     SpawnGoomba();
+                    difficulty -= dif;
                 }
-                difficulty -= dif;
+                else if(dif == 3 && level >= 3)
+                {
+                    Debug.Log("WRRYYYYY");
+                    SpawnTurtle();
+                    difficulty -= dif;
+                }
             }
         }
       
@@ -241,6 +246,27 @@ public class UnitManager : MonoBehaviour
             int row = Random.Range(0,available.Count);
             row = available[row];
             GameObject b = Instantiate(enemySpawnPrefab, NodeManager.instance.board[row][j].transform.position, Quaternion.identity) as GameObject;
+            b.GetComponent<Character>().SetNode(NodeManager.instance.board[row][j]);
+            enemies.Add(b.GetComponent<Character>());
+            NodeManager.instance.board[row][j].SetUnit(b.GetComponent<Character>());
+            break;
+        }
+    }
+    public void SpawnTurtle()
+    {
+        for (int i = 7; i >= 4; i--)
+        {
+            int j = i;
+            if (j > 4)
+            {
+                j = Random.Range(j - 1, j + 1);
+                if (GetAvailable(j).Count == 0) j = i;
+            }
+            List<int> available = GetAvailable(j);
+            if (available.Count == 0) continue;
+            int row = Random.Range(0, available.Count);
+            row = available[row];
+            GameObject b = Instantiate(enemyAssassinPrefab, NodeManager.instance.board[row][j].transform.position, Quaternion.identity) as GameObject;
             b.GetComponent<Character>().SetNode(NodeManager.instance.board[row][j]);
             enemies.Add(b.GetComponent<Character>());
             NodeManager.instance.board[row][j].SetUnit(b.GetComponent<Character>());
