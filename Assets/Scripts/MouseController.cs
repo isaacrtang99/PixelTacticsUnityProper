@@ -25,11 +25,11 @@ public class MouseController : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 50f, 1 << CharLayer))
         {
-            this.characterUnderMouse = hit.collider.transform.parent.GetComponent<Character>();
+            this.characterUnderMouse = hit.collider.transform.root.GetComponent<Character>();
         }
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 50f, 1 << NodeLayer))
         {
-            this.nodeUnderMouse = hit.collider.transform.parent.GetComponent<Node>();
+            this.nodeUnderMouse = hit.collider.transform.root.GetComponent<Node>();
         }
         if (Input.GetMouseButtonDown(0) && this.draggingCharacter == null && this.characterUnderMouse != null && this.characterUnderMouse.type.Equals("ally" ))
         {
