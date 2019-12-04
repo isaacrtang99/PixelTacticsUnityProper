@@ -56,7 +56,7 @@ public class MouseController : MonoBehaviour
                 }
                 else
                 {
-                    this.draggingCharacter.SetNode(this.draggingCharacter.prevNode);
+                    this.draggingCharacter.SetNode(this.draggingCharacter.prevNode, true);
                 }
                 this.draggingCharacter = null;
             }
