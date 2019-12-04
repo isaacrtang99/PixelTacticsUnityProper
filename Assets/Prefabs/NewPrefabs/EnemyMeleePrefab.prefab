@@ -82,6 +82,16 @@ PrefabInstance:
       propertyPath: damage
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 4616488824218351937, guid: df9ed6d4eb54a774d928008d08a84dbe,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4616488824218351937, guid: df9ed6d4eb54a774d928008d08a84dbe,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6689675316597104576, guid: df9ed6d4eb54a774d928008d08a84dbe,
         type: 3}
       propertyPath: m_Sprite

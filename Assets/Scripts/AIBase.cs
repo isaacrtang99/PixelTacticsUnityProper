@@ -17,9 +17,10 @@ public abstract class AIBase : MonoBehaviour
     protected Node targetAttackNode;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         this.mCharacter = this.gameObject.GetComponent<Character>();
+        this.mCharacter.mAI = this;
         this.pathfinder = this.gameObject.GetComponent<Pathfind>();
         this.targets = null;
         this.prevPos = this.transform.position;

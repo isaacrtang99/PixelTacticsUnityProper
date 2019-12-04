@@ -23,19 +23,29 @@ public class Character : MonoBehaviour
     Color c;
     Color c_end = Color.red;
 
+    public AIBase mAI;
+
     [SerializeField]
     private Transform healthBarTransform;
-    public void AddCrown()
+    [SerializeField]
+    private SpriteRenderer[] crownSprites;
+
+    public bool AddCrown()
     {
         if (crowns < 3)
         {
             crowns++;
         }
+        else return false;
+
         float temp_health = max_health;
         max_health += temp_health * .5f;
         health += temp_health * .5f;
         damage += damage * .5f;
 
+        this.crownSprites[crowns - 1].enabled = true;
+
+        return true;
     }
     public float Health
     {
@@ -100,13 +110,7 @@ public class Character : MonoBehaviour
                 temp = null;
             }
             currNode = n;
-            RangedAI ai = this.GetComponent<RangedAI>();
-            if (ai != null) ai.currPos = n.transform.position;
-            else
-            {
-                MeleeAI mai = this.GetComponent<MeleeAI>();
-                if (mai != null) mai.currPos = n.transform.position;
-            }
+            mAI.currPos = n.transform.position;
             if (setTransform) this.gameObject.transform.position = n.gameObject.transform.position;
         }
     }

@@ -11,12 +11,14 @@ public class MouseController : MonoBehaviour
     private CrownObject crownUnderMouse = null;
     private int NodeLayer;
     private int CharLayer;
+    private int CrownLayer;
 
     // Start is called before the first frame update
     void Start()
     {
         NodeLayer = LayerMask.NameToLayer("Node");
         CharLayer = LayerMask.NameToLayer("Character");
+        CrownLayer = LayerMask.NameToLayer("Crown");
     }
 
     // Update is called once per frame
@@ -33,27 +35,36 @@ public class MouseController : MonoBehaviour
         {
             this.nodeUnderMouse = hit.collider.transform.root.GetComponent<Node>();
         }
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 50f, 1 << CharLayer)) {
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 50f, 1 << CrownLayer)) {
             this.crownUnderMouse = hit.collider.transform.root.GetComponent<CrownObject>();
         }
-        if (Input.GetMouseButtonDown(0) && this.draggingCharacter == null &&this.draggingCrown == null && this.characterUnderMouse != null && this.characterUnderMouse.type.Equals("ally" ))
+        if (Input.GetMouseButtonDown(0) && this.draggingCharacter == null && this.draggingCrown == null && !UnitManager.instance.gameStarted)
         {
-            if (!UnitManager.instance.gameStarted)
+            if (this.characterUnderMouse != null && this.characterUnderMouse.type.Equals("ally"))
             {
                 this.draggingCharacter = this.characterUnderMouse;
                 this.draggingCharacter.prevNode = this.draggingCharacter.currNode;
             }
+            else if (this.crownUnderMouse != null)
+            {
+                this.draggingCrown = this.crownUnderMouse;
+            }
         }
-        else if(Input.GetMouseButtonDown(0) && this.draggingCharacter == null && this.draggingCrown == null && this.crownUnderMouse != null)
-        {
-            this.draggingCrown = this.crownUnderMouse;
-            this.draggingCrown.prevPosition = this.draggingCrown.transform.position;
-        }
+
         if (this.draggingCharacter != null)
         {
-            if (Input.GetMouseButtonUp(0))
+            this.draggingCharacter.transform.position = mousePos;
+        }
+        else if (this.draggingCrown != null)
+        {
+            this.draggingCrown.transform.position = mousePos;
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (this.draggingCharacter != null)
             {
-                if (this.nodeUnderMouse != null && this.nodeUnderMouse.currChar == null && (this.nodeUnderMouse.indices.y < 4||this.nodeUnderMouse.nType == NodeType.Bench))
+                if (this.nodeUnderMouse != null && this.nodeUnderMouse.currChar == null && (this.nodeUnderMouse.indices.y < 4 || this.nodeUnderMouse.nType == NodeType.Bench))
                 {
                     this.draggingCharacter.SetNode(this.nodeUnderMouse, true);
                     this.nodeUnderMouse.SetUnit(this.draggingCharacter);
@@ -69,21 +80,18 @@ public class MouseController : MonoBehaviour
                 }
                 this.draggingCharacter = null;
             }
-            else
+            else if (this.draggingCrown != null)
             {
-                this.draggingCharacter.transform.position = mousePos;
-            }
-        }
-        if(this.draggingCrown != null)
-        {
-            if (Input.GetMouseButtonUp(0))
-            {
-                if(this.characterUnderMouse != null)
+                if (this.characterUnderMouse != null && this.characterUnderMouse.AddCrown())
                 {
-                    this.characterUnderMouse.AddCrown();
                     Destroy(this.draggingCrown.gameObject);
-                    this.crownUnderMouse = null;
                 }
+                else
+                {
+                    this.draggingCrown.transform.position = this.draggingCrown.prevPosition;
+                    this.draggingCrown = null;
+                }
+
             }
         }
     }
@@ -92,5 +100,6 @@ public class MouseController : MonoBehaviour
     {
         this.characterUnderMouse = null;
         this.nodeUnderMouse = null;
+        this.crownUnderMouse = null;
     }
 }

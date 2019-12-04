@@ -15,13 +15,13 @@ public class UnitManager : MonoBehaviour
     public GameObject enemySpawnPrefab;
     public GameObject enemySpawnPrefabRanged;
     public GameObject enemyAssassinPrefab;
-    public GameObject crownPrefab;
+    public CrownObject crownPrefab;
     public List<List<Node>> boardNodes;
     public bool gameStarted;
     float addCooldown = 0.0f;
     float resetCooldown = 0.0f;
     public static int money = 100;
-    public static int level = 4;
+    public static int level = 0;
     public static int playerHealth = 5;
     
     int onBoard;
@@ -53,9 +53,8 @@ public class UnitManager : MonoBehaviour
                 level++;
                 if(level%5 ==0 && level != 0)
                 {
-
-                    GameObject c = Instantiate(crownPrefab, new Vector3(0, 3, 0), Quaternion.identity) as GameObject;
-                    c.GetComponent<CrownObject>().prevPosition = new Vector3(0, 3, 0);
+                    CrownObject crown = Instantiate(crownPrefab, new Vector3(1, 6, -0.3f), Quaternion.identity);
+                    crown.prevPosition = new Vector3(1, 6, -0.3f);
                 }
                 CreateNewStage(level);
                 gameStarted = false;
