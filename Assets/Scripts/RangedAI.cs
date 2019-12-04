@@ -28,6 +28,7 @@ public class RangedAI : AIBase
         foreach (Character c in targets)
         {
             Node n = c.currNode;
+            if (n.nType == NodeType.Bench) continue;
             if (n.GetUnit() != null)
             {
                 Node myNode = this.mCharacter.currNode;

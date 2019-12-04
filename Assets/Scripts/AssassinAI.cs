@@ -40,6 +40,7 @@ public class AssassinAI : AIBase
             foreach (Character c in targets)
             {
                 Node n = c.currNode;
+                if (n.nType == NodeType.Bench) continue;
                 if (n.GetUnit() != null)
                 {
                     int dist = Mathf.Abs(n.indices.x - myNode.indices.x) + Mathf.Abs(n.indices.y - myNode.indices.y);
