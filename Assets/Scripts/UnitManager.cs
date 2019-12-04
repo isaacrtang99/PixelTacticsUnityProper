@@ -15,13 +15,14 @@ public class UnitManager : MonoBehaviour
     public GameObject enemySpawnPrefab;
     public GameObject enemySpawnPrefabRanged;
     public GameObject enemyAssassinPrefab;
+    public GameObject crownPrefab;
     public List<List<Node>> boardNodes;
     public bool gameStarted;
     float addCooldown = 0.0f;
     float resetCooldown = 0.0f;
     public static int money = 100;
-    public static int level = 0;
-    public static int crownPoints = 0;
+    public static int level = 4;
+    
     int onBoard;
 
     private void Awake()
@@ -49,6 +50,12 @@ public class UnitManager : MonoBehaviour
             {
                 money += 7;
                 level++;
+                if(level%5 ==0 && level != 0)
+                {
+
+                    GameObject c = Instantiate(crownPrefab, new Vector3(0, 3, 0), Quaternion.identity) as GameObject;
+                    c.GetComponent<CrownObject>().prevPosition = new Vector3(0, 3, 0);
+                }
                 CreateNewStage(level);
                 gameStarted = false;
                 for(int i = 0; i < allyCopies.Count; i++)

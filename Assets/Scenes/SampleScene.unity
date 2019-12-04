@@ -18672,30 +18672,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bench: []
-  benchNodeMiddlePrefab: {fileID: 8904421356610012617, guid: dc4507c29b512ae449d5642775f52846,
-    type: 3}
-  benchNodeTopPrefab: {fileID: 6079117333134595738, guid: f647c3080fd97c74caa6f46a067215a7,
-    type: 3}
-  benchNodeBottomPrefab: {fileID: 1418217165638248906, guid: 90e771f397aaf5f4fac6d18e8074d5d6,
-    type: 3}
-  boardNodeMiddlePrefab: {fileID: 7854002460664591969, guid: 7abbba1440537454e866ea390e66a1aa,
-    type: 3}
-  boardNodeTopLeftPrefab: {fileID: 2289498929839736138, guid: 728207274b05c7c42beddcaeba324945,
-    type: 3}
-  boardNodeTopMidPrefab: {fileID: 7092717272114489574, guid: d7089e8063b5bbd41876ff89c0788c8a,
-    type: 3}
-  boardNodeTopRightPrefab: {fileID: 1660847992395076816, guid: 6b594f08838359b4e888bf91b1e9708b,
-    type: 3}
-  boardNodeMidLeftPrefab: {fileID: 1855198888554694018, guid: 0ed4e0c3013272c4eb2a77dedfd90bdd,
-    type: 3}
-  boardNodeMidRightPrefab: {fileID: 4885155833356263763, guid: 1ba3bca5b3f5eae4aaed5251f54e427f,
-    type: 3}
-  boardNodeBotLeftPrefab: {fileID: 7593239716692184428, guid: c73ef2469844abe4894a5335f83cae83,
-    type: 3}
-  boardNodeBotMidPrefab: {fileID: 1292667872982179388, guid: fc5da7ca64b9aef4981a257fd7a04487,
-    type: 3}
-  boardNodeBotRightPrefab: {fileID: 7379002706274695472, guid: 74dee9d0cae9fe44e88a48d50e106baa,
-    type: 3}
+  benchNodeMiddlePrefab: {fileID: 0}
+  benchNodeTopPrefab: {fileID: 0}
+  benchNodeBottomPrefab: {fileID: 0}
+  boardNodeMiddlePrefab: {fileID: 0}
+  boardNodeTopLeftPrefab: {fileID: 0}
+  boardNodeTopMidPrefab: {fileID: 0}
+  boardNodeTopRightPrefab: {fileID: 0}
+  boardNodeMidLeftPrefab: {fileID: 0}
+  boardNodeMidRightPrefab: {fileID: 0}
+  boardNodeBotLeftPrefab: {fileID: 0}
+  boardNodeBotMidPrefab: {fileID: 0}
+  boardNodeBotRightPrefab: {fileID: 0}
 --- !u!4 &1142410044
 Transform:
   m_ObjectHideFlags: 0
@@ -27318,6 +27306,8 @@ MonoBehaviour:
   enemySpawnPrefabRanged: {fileID: 2549063604585255575, guid: c754f047515ebe64797575f8f7a56708,
     type: 3}
   enemyAssassinPrefab: {fileID: 5167783053365595547, guid: a5e0f3d5c822ee943842a6a2b1e35f27,
+    type: 3}
+  crownPrefab: {fileID: 3430833935258633166, guid: 86dff8fb2ff355f42a4d1d27fdfe297d,
     type: 3}
   gameStarted: 0
 --- !u!212 &1717649046
