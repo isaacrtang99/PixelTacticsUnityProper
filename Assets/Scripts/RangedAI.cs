@@ -15,7 +15,7 @@ public class RangedAI : AIBase
             p.GetComponent<Projectile>().startPosition = this.gameObject.transform.position;
             p.GetComponent<Projectile>().targetNode = n;
             p.GetComponent<Projectile>().targetCharacter = n.currChar;
-            if (this.gameObject.GetComponent<Character>().type == "enemy")
+            if (this.mCharacter.type == "enemy")
             {
                 p.GetComponent<Projectile>().color = "green";
             }
@@ -29,7 +29,7 @@ public class RangedAI : AIBase
             Node n = c.currNode;
             if (n.GetUnit() != null)
             {
-                Node myNode = this.gameObject.GetComponent<Character>().currNode;
+                Node myNode = this.mCharacter.currNode;
                 int dist = Mathf.Abs(n.indices.x - myNode.indices.x) + Mathf.Abs(n.indices.y - myNode.indices.y);
                 if (n.GetUnit().type == this.targetType && dist <= 4)
                 {

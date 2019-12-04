@@ -9,6 +9,7 @@ public abstract class AIBase : MonoBehaviour
     public Vector3 currPos;
     public List<Character> targets;
 
+    protected Character mCharacter;
     protected bool isDead = false;
     protected bool isMoving = false;
     protected Pathfind pathfinder;
@@ -18,18 +19,21 @@ public abstract class AIBase : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        this.mCharacter = this.gameObject.GetComponent<Character>();
         this.pathfinder = this.gameObject.GetComponent<Pathfind>();
         this.targets = null;
         this.prevPos = this.transform.position;
         this.currPos = this.transform.position;
 
-        if (this.gameObject.GetComponent<Character>().type == "ally")
+        if (this.mCharacter.type == "ally")
         {
             this.targetType = "enemy";
+            this.targets = UnitManager.instance.enemies;
         }
-        else if (this.gameObject.GetComponent<Character>().type == "enemy")
+        else if (this.mCharacter.type == "enemy")
         {
             this.targetType = "ally";
+            this.targets = UnitManager.instance.allies;
         }
     }
 
@@ -44,15 +48,6 @@ public abstract class AIBase : MonoBehaviour
             return;
         }
 
-        if (this.gameObject.GetComponent<Character>().type == "ally")
-        {
-            targets = UnitManager.instance.enemies;
-        }
-        else if (this.gameObject.GetComponent<Character>().type == "enemy")
-        {
-            targets = UnitManager.instance.allies;
-        }
-
         int validTargetCount = 0;
         foreach (Character c in targets)
         {
@@ -60,10 +55,10 @@ public abstract class AIBase : MonoBehaviour
         }
         if (validTargetCount == 0) return;
 
-        if (gameObject.GetComponent<Character>().currNode != null && gameObject.GetComponent<Character>().currNode.nType != NodeType.Bench && gameObject.GetComponent<Character>().cState == CharacterState.Active && targets.Count > 0)
+        if (mCharacter.currNode != null && mCharacter.currNode.nType != NodeType.Bench && mCharacter.cState == CharacterState.Active && targets.Count > 0)
         {
             this.pathfinder.mState = this.calculateState();
-
+            if (this.pathfinder.mState == MeleeState.Stay) return;
             if (this.pathfinder.mState == MeleeState.Move)
             {
                 isMoving = true;
@@ -72,7 +67,7 @@ public abstract class AIBase : MonoBehaviour
                 Node targetNode = null;
                 int shortestDist = int.MaxValue;
                 int shortestSideDist = int.MaxValue;
-                Character mC = gameObject.GetComponent<Character>();
+                Character mC = mCharacter;
                 while (!hasFoundTargetSpace)
                 {
                     bool available = false;
@@ -114,7 +109,7 @@ public abstract class AIBase : MonoBehaviour
                 }
 
                 bool lerp = false;
-                this.pathfinder.PathFinder(gameObject.GetComponent<Character>().currNode, targetNode);
+                this.pathfinder.PathFinder(mCharacter.currNode, targetNode);
                 if (this.pathfinder.mNextNode != null && this.pathfinder.mNextNode.currChar != null)
                 {
                     if (this.pathfinder.mPath.Count > 0)
@@ -125,12 +120,12 @@ public abstract class AIBase : MonoBehaviour
                         this.prevPos = this.pathfinder.mPrevNode.transform.position;
                         this.currPos = this.pathfinder.mNextNode.transform.position;
                         this.pathfinder.mPath.RemoveAt(this.pathfinder.mPath.Count - 1);
-                        gameObject.GetComponent<Character>().SetNode(this.pathfinder.mNextNode);
+                        mCharacter.SetNode(this.pathfinder.mNextNode);
                         actionTimer = 1.0f;
                     }
                     else
                     {
-                        this.pathfinder.PathFinder(gameObject.GetComponent<Character>().currNode, oldEndNode);
+                        this.pathfinder.PathFinder(mCharacter.currNode, oldEndNode);
                     }
                 }
 
@@ -144,6 +139,10 @@ public abstract class AIBase : MonoBehaviour
                 this.prevPos = this.currPos;
                 attackNode(targetAttackNode);
                 actionTimer = 1.0f;
+            }
+            else if (this.pathfinder.mState == MeleeState.Stay)
+            {
+                this.prevPos = this.currPos;
             }
         }
     }

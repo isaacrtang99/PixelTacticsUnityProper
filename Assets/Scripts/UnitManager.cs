@@ -11,8 +11,10 @@ public class UnitManager : MonoBehaviour
     public List<Character> allyCopies;
     public GameObject allySpawnPrefab;
     public GameObject allySpawnPrefabRanged;
+    public GameObject allyAssassinPrefab;
     public GameObject enemySpawnPrefab;
     public GameObject enemySpawnPrefabRanged;
+    public GameObject enemyAssassinPrefab;
     public List<List<Node>> boardNodes;
     public bool gameStarted;
     float addCooldown = 0.0f;
@@ -70,18 +72,18 @@ public class UnitManager : MonoBehaviour
 
     public void AddMeleeButton()
     {
-        if (money <= 0) return;
-
-        AddAlly();
+        if (money >= 1) AddAlly();
 
     }
 
     public void AddRangedButton()
     {
-        if (money <= 0) return;
+        if (money >= 2) AddAllyRanged();
+    }
 
-        AddAllyRanged();
-
+    public void AddAssassinButton()
+    {
+        if (money >= 3) AddAllyAssassin();
     }
 
     void AddAlly()
@@ -109,11 +111,28 @@ public class UnitManager : MonoBehaviour
                 b.GetComponent<Character>().SetNode(NodeManager.instance.bench[i]);
                 allies.Add(b.GetComponent<Character>());
                 NodeManager.instance.bench[i].SetUnit(b.GetComponent<Character>());
-                money--;
+                money-= 2;
                 break;
             }
         }
     }
+
+    void AddAllyAssassin()
+    {
+        for (int i = 0; i < NodeManager.instance.bench.Count; i++)
+        {
+            if (NodeManager.instance.bench[i].GetUnit() == null)
+            {
+                GameObject b = Instantiate(allyAssassinPrefab, NodeManager.instance.bench[i].transform.position, Quaternion.identity) as GameObject;
+                b.GetComponent<Character>().SetNode(NodeManager.instance.bench[i]);
+                allies.Add(b.GetComponent<Character>());
+                NodeManager.instance.bench[i].SetUnit(b.GetComponent<Character>());
+                money-= 3;
+                break;
+            }
+        }
+    }
+
     void CreateNewStage(int level)
     {
 

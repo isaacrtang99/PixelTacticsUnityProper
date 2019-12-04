@@ -15,7 +15,7 @@ public class MeleeAI : AIBase
 
     protected override MeleeState calculateState()
     {
-        foreach (Node n in this.gameObject.GetComponent<Character>().currNode.mAdjacent)
+        foreach (Node n in this.mCharacter.currNode.mAdjacent)
         {
             if (n.GetUnit() != null)
             {

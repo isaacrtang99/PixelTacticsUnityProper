@@ -5,7 +5,8 @@ using UnityEngine;
 public enum MeleeState
 {
     Move,
-    Attack
+    Attack,
+    Stay
 }
 public class PathValues
 {
