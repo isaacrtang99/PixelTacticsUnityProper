@@ -29,8 +29,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1311d2c934dfbd43bd5a21b53718a4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveTimer: 0
-  attackTimer: 0
+  actionTimer: 0
+  oldEndNode: {fileID: 0}
+  prevPos: {x: 0, y: 0, z: 0}
+  currPos: {x: 0, y: 0, z: 0}
   targets: []
   mProjectile: {fileID: 4448122871721546684, guid: 6546c5de234ec0d4bafa16645d9b3e18,
     type: 3}
@@ -45,6 +47,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: EnemyPrefabRanged Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 7011422674779796613, guid: a7e8fb61472aa624a8be68b0c2c17ceb,
+        type: 3}
+      propertyPath: health
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 7011422674779796613, guid: a7e8fb61472aa624a8be68b0c2c17ceb,
+        type: 3}
+      propertyPath: max_health
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 7011422674779796613, guid: a7e8fb61472aa624a8be68b0c2c17ceb,
+        type: 3}
+      propertyPath: type
+      value: enemy
       objectReference: {fileID: 0}
     - target: {fileID: 6941629820667309837, guid: a7e8fb61472aa624a8be68b0c2c17ceb,
         type: 3}

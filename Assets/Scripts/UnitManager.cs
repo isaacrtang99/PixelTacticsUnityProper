@@ -98,9 +98,6 @@ public class UnitManager : MonoBehaviour
             {
                 GameObject b = Instantiate(allySpawnPrefab, NodeManager.instance.bench[i].transform.position, Quaternion.identity) as GameObject;
                 b.GetComponent<Character>().SetNode(NodeManager.instance.bench[i]);
-                b.GetComponent<Character>().type = "ally";
-                b.GetComponent<Character>().health = 1000;
-                b.GetComponent<Character>().max_health = 1000;
                 allies.Add(b.GetComponent<Character>());
                 NodeManager.instance.bench[i].SetUnit(b.GetComponent<Character>());
                 money--;
@@ -116,9 +113,6 @@ public class UnitManager : MonoBehaviour
             {
                 GameObject b = Instantiate(allySpawnPrefabRanged, NodeManager.instance.bench[i].transform.position, Quaternion.identity) as GameObject;
                 b.GetComponent<Character>().SetNode(NodeManager.instance.bench[i]);
-                b.GetComponent<Character>().type = "ally";
-                b.GetComponent<Character>().health = 800;
-                b.GetComponent<Character>().max_health = 800;
                 allies.Add(b.GetComponent<Character>());
                 NodeManager.instance.bench[i].SetUnit(b.GetComponent<Character>());
                 money--;
@@ -149,10 +143,34 @@ public class UnitManager : MonoBehaviour
                 }
             }
         }
+        Debug.Log(level);
         int difficulty = level * 3;
-        while(difficulty >= 0)
+        while(difficulty > 0)
         {
-
+            Debug.Log(difficulty);
+            if (difficulty == 1)
+            {
+                SpawnSkel();
+                difficulty -= 1;
+            }
+            else if (difficulty == 2)
+            {
+                SpawnGoomba();
+                difficulty -= 2;
+            }
+            else
+            {
+                int dif = Random.Range(1, 3);
+                if (dif == 1)
+                {
+                    SpawnSkel();
+                }
+                else if(dif == 2)
+                {
+                    SpawnGoomba();
+                }
+                difficulty -= dif;
+            }
         }
       
     }
@@ -201,12 +219,33 @@ public class UnitManager : MonoBehaviour
             List<int> available = GetAvailable(i);
             if (available.Count == 0) continue;
             int row = Random.Range(0,available.Count);
-
+            row = available[row];
+            GameObject b = Instantiate(enemySpawnPrefab, NodeManager.instance.board[row][i].transform.position, Quaternion.identity) as GameObject;
+            b.GetComponent<Character>().SetNode(NodeManager.instance.board[row][i]);
+            enemies.Add(b.GetComponent<Character>());
+            NodeManager.instance.board[row][i].SetUnit(b.GetComponent<Character>());
+            break;
         }
     }
-    public void SpawnBat()
+    public void SpawnGoomba()
     {
+        for (int i = 7; i >= 4; i--)
+        {
+            int j = i;
+            if(j > 4)
+            {
 
+            }
+            List<int> available = GetAvailable(j);
+            if (available.Count == 0) continue;
+            int row = Random.Range(0, available.Count);
+            row = available[row];
+            GameObject b = Instantiate(enemySpawnPrefabRanged, NodeManager.instance.board[row][j].transform.position, Quaternion.identity) as GameObject;
+            b.GetComponent<Character>().SetNode(NodeManager.instance.board[row][j]);
+            enemies.Add(b.GetComponent<Character>());
+            NodeManager.instance.board[row][j].SetUnit(b.GetComponent<Character>());
+            break;
+        }
     }
     public List<int> GetAvailable(int col)
     {

@@ -109,8 +109,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 144f6508d6972fa468309931b20033ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugIcon: {fileID: 971837438952226137}
-  moveTimer: 0
+  actionTimer: 0
+  oldEndNode: {fileID: 0}
+  prevPos: {x: 0, y: 0, z: 0}
+  currPos: {x: 0, y: 0, z: 0}
   targets: []
 --- !u!1001 &1151246059577364911
 PrefabInstance:
@@ -123,6 +125,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: EnemyPrefab Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 7011422674779796613, guid: a7e8fb61472aa624a8be68b0c2c17ceb,
+        type: 3}
+      propertyPath: health
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7011422674779796613, guid: a7e8fb61472aa624a8be68b0c2c17ceb,
+        type: 3}
+      propertyPath: max_health
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7011422674779796613, guid: a7e8fb61472aa624a8be68b0c2c17ceb,
+        type: 3}
+      propertyPath: type
+      value: enemy
       objectReference: {fileID: 0}
     - target: {fileID: 6941629820667309838, guid: a7e8fb61472aa624a8be68b0c2c17ceb,
         type: 3}
