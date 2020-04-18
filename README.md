@@ -1,3 +1,3 @@
 # PixelTacticsUnity
 
-aaaa
+A procedurally generated auto chess prototype.
